@@ -64,22 +64,46 @@ RUN=$(screen -list | grep -o "$SERVER")                 			#
 if [ "$RUN" == "$SERVER" ]                              			#
  then                                                   			#
   printf "[ INFO ] $SERVER is running... also informing users...\n"		#
-  screen -S $SERVER -X stuff 'say [Info] downloading Server updates...\n'	#
+  screen -S $SERVER -X stuff 'say [Info] checking for Server updates...\n'	#
 fi                                                     				#
 #################################################################################
 
+#### GET THE LATEST VERSIONS.JSON ###############################################################
+curl -s https://launchermeta.mojang.com/mc/game/version_manifest.json | jq > versions.json      #
+printf "[$GREEN DONE $NORMAL] fetched latest manifest from Mojang\n"                            #
+LATEST=$(jq -r '.latest.release' versions.json)							#
+#################################################################################################
 
-### Quick Fix without applyupdates.sh # maybe check for new versions
-./serverdownloader.sh $VERSION
-mv vanilla-*.jar ~/$SERVER/
+
+if [ "$VERSION" != "$LATEST" ]
+ then
+   #### CHECK IF SERVER IS RUNNING IF SO INFORM USERS ON SERVER ####################
+   if [ "$RUN" == "$SERVER" ]                              			#
+    then                                                   			#
+     printf "[ INFO ] $SERVER is running... also informing users...\n"		#
+     screen -S $SERVER -X stuff 'say [Info] downloading Server updates...\n'	#
+   fi                                                     				#
+   #################################################################################
+   ./serverdownloader.sh $VERSION
+   mv vanilla-*.jar $USDIR
+
+   #### CHECK IF SERVER IS RUNNING IF SO INFORM USERS ON SERVER ############
+   if [ "$RUN" == "$SERVER" ]                                              #
+    then                                                                   #
+     screen -S $SERVER -X stuff 'say [Info] Download erfolgreich!\n' 	#
+   fi                                                                      #
+
+ else
+  printf "[$GREEN DONE $NORMAL] Ver.: $VERSION is the latest version.\n"
+  #### CHECK IF SERVER IS RUNNING IF SO INFORM USERS ON SERVER ##################
+  if [ "$RUN" == "$SERVER" ]                                              	#
+   then                                                                   	#
+   screen -S $SERVER -X stuff 'say [Info] Version: $VERSION ist aktuell.\n' 	#
+  fi                                                                      	#
+  ###############################################################################
+
+fi
 
 
-#### CHECK IF SERVER IS RUNNING IF SO INFORM USERS ON SERVER ############
-#########################################################################
-if [ "$RUN" == "$SERVER" ]                                              #
- then                                                                   #
-  screen -S $SERVER -X stuff 'say [Info] Download erfolgreich!\n' 	#
-fi                                                                      #
-#########################################################################
 
 #### EOF ####

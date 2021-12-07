@@ -95,7 +95,7 @@ read -p "[  IN  ] [ 1024M ] Ram? : " RAM			#
 case "$RAM" in							#
  "")								#
   RAM=${RAM:-1024M}						#
-  printf "[$GREEN  OK  $NORMAL] using default => $RAM\n";;	#
+  printf "[$GREEN  OK  $NORMAL] using the minimum => $RAM\n";;	#
  *M)								#
   RAM=$RAM							#
   printf "[$GREEN  OK  $NORMAL] Ram is set to: $RAM\n";;	#
@@ -236,9 +236,9 @@ cp ~/$SCRIPTS/$SERVERTYPE/*.sh ~/$SERVER/scripts/	#
 cd ~/$SERVER/scripts					#
 #########################################################
 
-#### SETUP NEW SCRIPTS TO MATCH THE NEW / OLD SERVER ####################
-#########################################################################
+#### SETUP NEW SCRIPTS TO MATCH THE NEW / OLD SERVER ####################################
 sed -i "s|SERVER=\"\"|SERVER=\"$SERVER\"|" ~/$SERVER/scripts/*.sh	#
+sed -i "s|SERVERTYPE=\"\"|SERVERTYPE=\"$SERVERTYPE\"|" ~/$SERVER/scripts/*.sh	#
 sed -i "s|VERSION=\"\"|VERSION=\"$VERSION\"|" ~/$SERVER/scripts/*.sh	#
 sed -i "s|RAM=\"\"|RAM=\"$RAM\"|" ~/$SERVER/scripts/*.sh		#
 sed -i "s|SCRIPTS=\"\"|SCRIPTS=\"$SCRIPTS\"|" ~/$SERVER/scripts/*.sh	# needed ? placeholder
@@ -253,7 +253,7 @@ if [ "$UNTESTED" == "y" ]								#
   printf "[ INFO ] creating nessesary dirs...\n"					#
   mkdir ~/$SERVER/plugins > /dev/null 2>&1						#
   mkdir ~/$SERVER/scripts/update > /dev/null 2>&1					#
-  mkdir ~/$SERVER/scripts/update/$SERVERTYPE > /dev/null 2>&1					#
+  mkdir ~/$SERVER/scripts/update/$SERVERTYPE > /dev/null 2>&1				#
   mkdir ~/$SERVER/scripts/update/plugins > /dev/null 2>&1				#
   mkdir ~/$SERVER/scripts/update/plugins/man > /dev/null 2>&1				#
   mkdir ~/$SERVER/scripts/update/plugins/new > /dev/null 2>&1				#

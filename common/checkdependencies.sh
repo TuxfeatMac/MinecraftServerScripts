@@ -1,7 +1,7 @@
 # !/bin/bash
 #################################################################
 # Name:      checkdependencies.sh         Version:      0.3.0   #
-# Created:   05.12.2021		     Modified:     18.04.2021  	#
+# Created:   05.12.2021		     Modified:     08.12.2021  	#
 # Author:    Joachim Traeuble                                	#
 # Purpose:   check if all nessesary dependencies are installed	#
 #            to run the scripts and server.			#
@@ -78,9 +78,9 @@ if [ "$JAVA" == "" ]                                                            
        printf "[  OK  ] $JAVA\t> $JVER\n"                                            		#
      fi;;											#
     *)												#
-     printf "[$YELLOW WARN $NORMAL] java version for miencraft $VERSION undefined!\n"		#
-     printf "[$YELLOW WARN $NORMAL] unable to check against miencraft version...\n"		#
-     printf "[$YELLOW WARN $NORMAL]$RED install correct java version for minecraft version manually!$NORMAL\n"		#
+     printf "[$YELLOW WARN $NORMAL] java version for minecraft $VERSION undefined!\n"		#
+     printf "[$YELLOW WARN $NORMAL] unable to check against minecraft version...\n"		#
+     printf "[$YELLOW WARN $NORMAL]$RED install correct java version for minecraft $VERSION manually! $NORMAL\n"		#
      exit;;                                             					#
    esac												#
 fi												#
