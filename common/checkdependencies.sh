@@ -22,17 +22,9 @@ YELLOW=$(tput setaf 3)   #
 SPACER_1="=========================================================\n"  #
 #########################################################################
 
-#### CHECK SETUP ########################################
-#if [ "$VERSION" == "" ]                                 #
-# then                                                   #
-#  printf "[$RED EXIT $NORMAL] VERSION not set!\n"       #
-#  exit                                                  #
-#fi                                                      #
-#########################################################
-
 #### CHECK TOOLS ################################################################################
 printf "[ INFO ] checking dependencies... \n"							#
-PKGS='screen curl jq unzip rrdtool figlet'							#
+PKGS='screen curl jq unzip rrdtool'								#
 for PKG in $PKGS										#
  do												#
   INSTALLED=$(command -v $PKG | cut -d "/" -f 4)                                     		#
@@ -67,15 +59,9 @@ fi											#
 JAVA=$(command -v java | cut -d "/" -f 4)                                                     	#
 if [ "$JAVA" == "" ]                                                                  		#
  then                                                                                         	#
-  printf "\n[$YELLOW WARN $NORMAL] to run this server and scripts you need the $JAVA pkg!\n"	#
-  printf "\n[ INFO ] installing $JAVA via apt\n\n"                                             	#
-   case $VERSION in										#
-    1.18)											#
-     sudo apt install -y openjdk-17-jdk-headless;;						#
-    *)												#
-     printf "\n[ EXIT ] dang wrong $JAVA $ VERSION\n"						#
-     exit;;                                             					#
-   esac												#
+  printf "\n[$YELLOW WARN $NORMAL] to run this server and scripts you need java !\n"		#
+  printf "\n[ INFO ] installing default java jdk headless via apt\n"                            #
+  sudo apt install -y default-jdk-headless							#
   else												#
    JVER=$(java -version 2>&1 | grep version | cut -d " " -f 3 | tr -d '"')			#
     case $VERSION in										#
