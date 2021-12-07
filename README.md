@@ -4,7 +4,7 @@ Script's musst be placed in home directory.
 
 0. cd ~
 1. wget https://github.com/TuxfeatMac/MinecraftServerScripts/archive/refs/heads/0_3_0.zip
-2. unzip MinecraftServerScripts-0_3_0.zip
+2. unzip 0_3_0.zip
 3. cd MinecraftServerScripts-0_3_0
 4. ./setup.sh
 5. Follow instructions.
