@@ -1,14 +1,14 @@
 #!/bin/bash
 #################################################################
 # Name:         setup.sh              Version:      0.3.0       #
-# Created:      06.12.2020            Modified:     05.12.2021  #
+# Created:      06.12.2020            Modified:     07.12.2021  #
 # Author:       Joachim Traeuble                                #
 # Purpose:      setup a new MineCraftServer, with ease          #
 #################################################################
 
 #### STATIC VARIABELS AND DIRECTORIES ###################################
 #########################################################################
-SCRIPTS="0_3_0-scripts"		# -ORIGINAL-SCRIPTS-FOLDER- 		#
+SCRIPTS="MinecraftServerScripts-0_3_0"      # -ORIGINAL-SCRIPTS-FOLDER- #
 SPACER_1="=========================================================\n"	#
 SPACER_2=""								#
 #########################################################################
@@ -317,8 +317,6 @@ if [ "$OVERRIDE" == "" ]						#
   printf "=========================================================\n"	#
   ./applyupdate.sh							#
   #######################################################################
-  printf "=========================================================\n"	#  setup serverport here ? ask for it ?
-  printf "[ INFO ] set the Server Port...\n"				#
   touch ~/$SERVER/server.properties					#
   printf "server-port=$PORT" > ~/$SERVER/server.properties		#
   printf "[$GREEN INFO $NORMAL] Server Port set to $PORT\n"		#  fixed 25500 for now
