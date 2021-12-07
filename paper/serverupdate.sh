@@ -66,7 +66,7 @@ fi                                                     				#
 #### GETTING PAPER SERVER UPDATES READY TO INSTALL ######################################################
 cd $USDIR												#
 rm *.jar > /dev/null 2>&1										#
-LATESTBUILD=$(curl -s https://papermc.io/api/v2/projects/paper/versions/$VERSION/ | jq '.[]' | tail -n 2 | head -n 1 | xargs) ## not perfect but works, better jq aerguments avaible
+LATESTBUILD=$(curl -s https://papermc.io/api/v2/projects/paper/versions/$VERSION/ | jq '.[]' | tail -n 2 | head -n 1 | xargs) ## not perfect but works, better jq aerguments avaible allso check first  like on vanilla ? or even move to seperate "downloader ?"
 printf "[ INFO ] downloading latest PaperServer $VERSION ...\n"						#
 wget https://papermc.io/api/v2/projects/paper/versions/$VERSION/builds/$LATESTBUILD/downloads/paper-$VERSION-$LATESTBUILD.jar -q --show-progress
 printf "[$GREEN DONE $NORMAL] update ready apply with ./applyupdate.sh\n"				#

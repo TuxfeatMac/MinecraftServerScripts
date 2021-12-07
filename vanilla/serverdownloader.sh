@@ -22,19 +22,19 @@ LATEST=$(jq -r '.latest.release' versions.json)							#
 LATESTSNAP=$(jq -r '.latest.snapshot' versions.json)						#
 #################################################################################################
 
-#### CHECK IF A VERSION IS PROVIDED ELSE SHOW USAGE OF SCRIPT ###
-if [ "$1" == "" ]						#
- then								#
-  printf "[ INFO ] no version provided... try:\n"		#
-  printf "[ INFO ] ./serverdownload.sh <VERSION>\n"		#
+#### CHECK IF A VERSION IS PROVIDED ELSE SHOW USAGE OF SCRIPT ###########
+if [ "$1" == "" ]							#
+ then									#
+  printf "[ INFO ] no version provided... try:\n"			#
+  printf "[ INFO ] ./serverdownload.sh <VERSION>\n"			#
   printf "[ INFO ] latest$GREEN release $NORMAL:    $LATEST\n"		#
-  printf "[ INFO ] latest$YELLOW snapshot $NORMAL:   $LATESTSNAP\n"		#
-  printf "[ INFO ] assuming latest release...\n"		#
-  VERSION=$LATEST						#
- else								#
-  VERSION=$1							#
-fi								#
-#################################################################
+  printf "[ INFO ] latest$YELLOW snapshot $NORMAL:   $LATESTSNAP\n"	#
+  printf "[ INFO ] assuming latest release...\n"			#
+  VERSION=$LATEST							#
+ else									#
+  VERSION=$1								#
+fi									#
+#########################################################################
 
 #### EXTRACT THE CORRESPONDING VERSION.JSON #############################################
 VERSIONURL=$(jq -r ".versions | .[] | select(.id==\"$VERSION\") | .url" versions.json)	#
