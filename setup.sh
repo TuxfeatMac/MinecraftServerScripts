@@ -29,6 +29,10 @@ printf "|	     $GREY created by Joachim Traeuble	$NORMAL        |\n"	#
 printf "+=======================================================+\n"		#
 #################################################################################
 
+#### DEPENDENCY CHECK ###################
+~/$SCRIPTS/common/checkdependecies.sh	#
+#########################################
+
 #### GET AND SET THE SERVERNAME #################################
 read -p "[  IN  ] ServerName ? : " SERVER			#
 if [ "$SERVER" == "" ]						#
