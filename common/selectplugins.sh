@@ -20,11 +20,11 @@ YELLOW=$(tput setaf 3)   #
 ##########################
 
 #### STATIC VARIABELS ###########################
+SCRIPTS=""	#
 SCDIR=~/$SERVER/scripts               	   	#
 MPDIR=~/$SERVER/scripts/update/plugins/man	#
 SPDIR=~/$SCRIPTS/plugins/common			# see PluginList.txt
 SERVERTYPE=""				#
-SCRIPTS=""				#
 #################################################
 
 #### CHECK SETUP ########################################################
