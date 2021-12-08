@@ -37,9 +37,9 @@ fi										#
 
 #### DISPLAY INFOS ##############################################################
 dynline1									#
-printf "| This script can be used to set up a new Server or to \n"		#
-printf "| replace the old scripts with a new script version    \n"		#
-printf "|	     $GREY created by Joachim Traeuble	$NORMAL \n"		#
+printf "|     This script can be used to set up a new Server or to \n"		#
+printf "|     replace the old scripts with a new script version    \n"		#
+printf "|	              $GREY created by Joachim Traeuble	$NORMAL \n"	#
 dynline1									#
 #################################################################################
 
@@ -145,25 +145,25 @@ esac                                                            #
 #################################################################
 
 #### VANILLA #### GET AND SET THE SERVERVERSION #################################
-if [ "$SERVERTYPE" == "vanilla" ]                                               #  redising check against mojang versions
+if [ "$SERVERTYPE" == "vanilla" ]                                               #
  then										#
   printf "[ INFO ] fetching vanilla versions...\n"				#
   LATESTRELEASE=$(~/$SCRIPTS/vanilla/optional/getlatestversion.sh)		#
   read -p "[  IN  ] [ "$LATESTRELEASE" ] Version? : " VERSION			#
   case "$VERSION" in                                                            #
-   "")                                                                       	# get latest default
+   "")                                                                       	#
     VERSION=${VERSION:-$LATESTRELEASE}                                          #
     printf "[$GREEN   OK   $NORMAL] using official latest => $VERSION\n";;	#
    *)                                                         	                #
     printf "[$YELLOW  OK  $NORMAL] trying version => $VERSION , checking...\n"	#
-    EXISTS=$(~/$SCRIPTS/vanilla/optional/versionexits.sh $VERSION)		# checks for valid version, if not vaild exits, test worlking exit main script                                                                                #
-    if [ "$EXISTS" == "" ]
-     then
-      VERSION="$VERSION"
-      UNCHECKED="y"								# UNCHECKED flagg means nothing for now
-     else
-      printf "[ EXIT ] $version is not a valid version \n" #
-    fi
+    EXISTS=$(~/$SCRIPTS/vanilla/optional/versionexits.sh $VERSION)		#
+    if [ "$EXISTS" == "" ]							#
+     then									#
+      VERSION="$VERSION"							#
+      UNCHECKED="y"								# UNCHECKED flagg no function for now
+     else									#
+      printf "[ EXIT ] $version is not a valid version \n"			#
+    fi										#
   esac                                                                          #
   rm versions.json								#
 fi                                                                              #
@@ -177,9 +177,9 @@ if [ "$SERVERTYPE" == "paper" ]									#    add the other server versions
    "")												#
     VERSION=${VERSION:-1.18}									#
     printf "[$GREEN  OK  $NORMAL] using default => $VERSION\n";;				#
-   1.18)                                                                                      #
-    VERSION="1.18"                                                                            #
-    printf "[$GREEN  OK  $NORMAL] using => $VERSION\n";;
+   1.18)                                                                                        #
+    VERSION="1.18"                                                                              #
+    printf "[$GREEN  OK  $NORMAL] using => $VERSION\n";;					#
    1.17.1)											#
     VERSION="1.17.1"										#
     printf "[$GREEN  OK  $NORMAL] using => $VERSION\n";;					#
@@ -205,16 +205,14 @@ if [ "$SERVERTYPE" == "paper" ]									#    add the other server versions
 fi												#
 #################################################################################################
 
-
 #### SNAPSHOT SERVER ############################################
-#if [ "$SERVERTYPE" == "velocity" ]				#
+#if [ "$SERVERTYPE" == "snapshot" ]				#
 # then								#
 #fi								#
 #################################################################
 
-
 #### SNAPSHOT SERVER ############################################
-#if [ "$SERVERTYPE" == "snapshot" ]				#
+#if [ "$SERVERTYPE" == "spigot" ]				#
 # then								#
 #  OVERRIDE="y"   # change y to true ?				#
 #fi								#
@@ -224,14 +222,14 @@ fi												#
 #### REALLY #####################################################################################
 if [ "$UNTESTED" == "y" ] && [ "$OVERRIDE" == "y" ]						#
  then												#
-  tput setaf 2 && dynline1 && tput sgr0										#
+  tput setaf 2 && dynline1 && tput sgr0								#
   read -t 10 -n 1 -p "[$RED  IN  $NORMAL] [ y / n ] you have done your backups? : " INPUT	#
   if [ "$INPUT" != "y" ]									#
    then												#
     printf "\n"											#
     exit											#
    else												#
-    tput setaf 2 && dynline1 && tput sgr0										#
+    tput setaf 2 && dynline1 && tput sgr0							#
   fi												#
   ###############################################################################################
   read -t 10 -n 1 -p "[$RED  IN  $NORMAL] [ y / n ] you really know what you doing? : " INPUT	#
@@ -240,7 +238,7 @@ if [ "$UNTESTED" == "y" ] && [ "$OVERRIDE" == "y" ]						#
     printf "\n"											#
     exit											#
    else												#
-    tput setaf 2 && dynline1 && tput sgr0										#
+    tput setaf 2 && dynline1 && tput sgr0							#
   fi												#
 fi												#
 #################################################################################################
@@ -250,7 +248,7 @@ mkdir -p ~/$SERVER 					#
 mkdir -p ~/$SERVER/scripts				#
 cp ~/$SCRIPTS/common/*.sh ~/$SERVER/scripts/		#
 cp ~/$SCRIPTS/$SERVERTYPE/*.sh ~/$SERVER/scripts/	#
-cd ~/$SERVER/scripts					#
+#cd ~/$SERVER/scripts					#
 #########################################################
 
 #### SETUP NEW SCRIPTS TO MATCH THE NEW / OLD SERVER ####################################
