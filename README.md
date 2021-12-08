@@ -13,10 +13,16 @@ Script's musst be placed in home directory.
 
 Auto start / daily backup / update / restart via crontab
 0. crontab -e
+
 @reboot /home/<USERNAME>/<SERVER-1>/scripts/start.sh -b
+
 @reboot /home/<USERNAME>/<SERVER-n>/scripts/start.sh -b
+
 1 0 * * * /home/<USERNAME>/<SERVER-1>/scripts/dailyrestart.sh
+
 9 0 * * * /home/<USERNAME>/<SERVER-n>/scripts/dailyrestart.sh
+
+
 
 Notes
 Errors according to missing scripts are fine, since I have not uploaded all scripts yet.
