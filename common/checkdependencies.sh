@@ -70,7 +70,7 @@ if [ "$JAVA" == "" ]
       then											#
        printf "[ INFO ] java version $JVER found.\n"						#
        printf "[$YELLOW WARN $NORMAL] to run this server need java version < 17!\n"		#
-       printf "[ INFO ] installing java 17 via apt\n\n"                                       	#
+       printf "[ INFO ] installing java 17 via apt\n"                                       	#
        printf "$SPACER_1"									#
        sudo apt install -y openjdk-17-jdk-headless						#
        printf "$SPACER_1"									#

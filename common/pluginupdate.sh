@@ -74,7 +74,7 @@ done                                                                    	#
 #### SKIP IF VANILLA SERVER NO PLUGINS ##################
 if [ $SERVERTYPE == "vanilla" ]         		#
  then                                   		#
-  printf "[$RED SKIP $NORMAL] vanilla, no plugins.\n"	#
+  printf "[ SKIP ] vanilla, no plugins.\n"	#
   exit                                  		#
 fi                  			                #
 #########################################################

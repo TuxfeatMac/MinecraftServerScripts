@@ -9,7 +9,7 @@
 #### STATIC VARIABELS AND DIRECTORIES ###################################
 #########################################################################
 SCRIPTS="MinecraftServerScripts-0_3_0"      # -ORIGINAL-SCRIPTS-FOLDER- #
-SPACER_1="=========================================================\n"	#
+SPACER_1="="								#
 SPACER_2=""								#
 #########################################################################
 
@@ -21,12 +21,22 @@ YELLOW=$(tput setaf 3)   #
 GREY=$(tput setaf 8)     #
 ##########################
 
+#### DEFINE DYINAMIC SEPERATOR LINE #############################
+dynline1 () {							#
+WIDTHMAX=$(stty -a <$SSH_TTY | grep -Po '(?<=columns )\d+')     #
+for (( WIDTH=1; WIDTH<=$WIDTHMAX; WIDTH++ ))                    #
+ do                                                             #
+  printf "$SPACER_1"                                            #
+done                                                            #
+}								#
+#################################################################
+
 #### DISPLAY INFOS ##############################################################
-printf "+=======================================================+\n"		#
-printf "| This script can be used to set up a new Server or to  |\n"		#
-printf "| replace the old scripts with a new script version     |\n"		#
-printf "|	     $GREY created by Joachim Traeuble	$NORMAL        |\n"	#
-printf "+=======================================================+\n"		#
+printf " +=======================================================+\n"		#
+printf " | This script can be used to set up a new Server or to  |\n"		#
+printf " | replace the old scripts with a new script version     |\n"		#
+printf " |	     $GREY created by Joachim Traeuble	$NORMAL        |\n"	#
+printf " +=======================================================+\n"		#
 #################################################################################
 
 #### BASIC DEPENDENCY CHECK #####################################
