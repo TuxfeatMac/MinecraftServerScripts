@@ -12,6 +12,7 @@ Script's musst be placed in home directory.
 
 
 Auto start / daily backup / update / restart via crontab
+
 0. crontab -e
 
 @reboot /home/<USERNAME>/<SERVER-1>/scripts/start.sh -b
