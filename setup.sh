@@ -190,13 +190,13 @@ if [ "$SERVERTYPE" == "paper" ]									#    add the other server versions
     UNTESTED="y"										#
     $YELLOW dynline1 $NORMAL										#
     printf "[$YELLOW WARN $NORMAL] untested version... trying to setup $VERSION\n"		#
-    $YELLOW dynline1 $NORMAL										#
+    $YELLOW dynline1 $NORMAL;;										#
    1.8.8)											#	add more versions?
     VERSION="1.8.8"										#
     UNTESTED="y"										#
     $YELLOW dynline1 $NORMAL										#
     printf "[$YELLOW WARN $NORMAL] untested version... trying to setup $VERSION\n"		#
-    $YELLOW dynline1 $NORMAL										#
+    $YELLOW dynline1 $NORMAL;;										#
    *)												#
     printf "[$YELLOW SKIP $NORMAL] invalid input abbort...\n"					#
     exit;;											#
