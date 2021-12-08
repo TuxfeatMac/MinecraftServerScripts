@@ -71,6 +71,13 @@ for DIR in $UDIR $UPDIR $NPDIR $MPDIR $TPDIR                                    
 done                                                                    	#
 #################################################################################
 
+#### SKIP IF VANILLA SERVER NO PLUGINS ##
+if [ $SERVERTYPE == "vanilla" ]         #
+ then                                   #
+  exit                                  #
+fi                                      #
+#########################################
+
 #### CHECK VERSION  #############################################################################
 if [ "$VERSION" != "1.18" ]									# add compatibility list
  then												#
@@ -78,13 +85,6 @@ if [ "$VERSION" != "1.18" ]									# add compatibility list
   printf "[$RED WARN $NORMAL] trying anyway\n"							#
 fi												#
 #################################################################################################
-
-#### SKIP IF VANILLA SERVER NO PLUGINS ##
-if [ $SERVERTYPE == "vanilla" ]         #
- then                                   #
-  exit                                  #
-fi                                      #
-#########################################
 
 #### CHECK IF SERVER IS RUNNING IF SO INFORM USERS ON SERVER ####################
 RUN=$(screen -list | grep -o "$SERVER")                                         #
