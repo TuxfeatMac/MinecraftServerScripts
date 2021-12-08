@@ -33,16 +33,17 @@ if [ ! -f versions.json ]									#
 fi												#
 #################################################################################################
 
-#### EXTRACT THE CORRESPONDING VERSION.JSON #############################################
-VERSION=$(jq -r ".versions | .[] | select(.id==\"$VERSION\") | .id,.id" versions.json)	#
-if [ "$VERSION" == "" ]									#
- then											#
-  # VERSION NOT KNOWN BY MOJANG, NO OUTPUT WILL BE USED BY SETUP.SH AS INDICATOR	#
-  exit											#
- else											#
-  printf "[$GREEN INFO $NORMAL] is a valid version!\n"		#
-fi											#
-#########################################################################################
+#### EXTRACT THE CORRESPONDING VERSION.JSON #####################################################
+VERSION=$(jq  ".versions | .[] | select(.id==\"$VERSION\")" versions.json | tr -d '{,"}')	#
+if [ "$VERSION" == "" ]										#
+ then												#
+  # VERSION NOT KNOWN BY MOJANG, NO OUTPUT WILL BE USED BY SETUP.SH AS INDICATOR		#
+  exit												#
+ else												#
+  printf "[$GREEN INFO $NORMAL] is a valid version!\n"						#
+  printf "$VERSION \n\n"									#
+fi												#
+#################################################################################################
 
 #### CLEAN UP ###########
 rm versions.json	#
