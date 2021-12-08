@@ -29,9 +29,9 @@ printf "|	     $GREY created by Joachim Traeuble	$NORMAL        |\n"	#
 printf "+=======================================================+\n"		#
 #################################################################################
 
-#### BASIC DEPENDENCY CHECK #############
-~/$SCRIPTS/common/checkdependencies.sh	#
-#########################################
+#### BASIC DEPENDENCY CHECK #####################################
+~/$SCRIPTS/common/checkdependencies.sh	--noversioncheck	#
+#################################################################
 
 #### GET AND SET THE SERVERNAME #################################
 read -p "[  IN  ] ServerName ? : " SERVER			#

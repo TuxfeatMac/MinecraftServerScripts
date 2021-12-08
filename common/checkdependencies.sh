@@ -23,7 +23,7 @@ SPACER_1="=========================================================\n"  #
 #########################################################################
 
 #### CHECK TOOLS ################################################################################
-printf "[ INFO ] checking dependencies... \n"							#
+printf "[ INFO ] checking base dependencies... \n"							#
 PKGS='screen curl jq unzip rrdtool'								#
 for PKG in $PKGS										#
  do												#
@@ -57,7 +57,7 @@ fi											#
 
 #### CHECK JAVA VERSION ######################################################################### match server veersion with java version
 JAVA=$(command -v java | cut -d "/" -f 4)                                                     	#
-if [ "$JAVA" == "" ]                                                                  		#
+if [ "$JAVA" == "" ]
  then                                                                                         	#
   printf "\n[$YELLOW WARN $NORMAL] to run this server and scripts you need java !\n"		#
   printf "\n[ INFO ] installing default java jdk headless via apt\n"                            #
@@ -78,9 +78,12 @@ if [ "$JAVA" == "" ]                                                            
        printf "[  OK  ] $JAVA\t> $JVER\n"                                            		#
      fi;;											#
     *)												#
-     printf "[$YELLOW WARN $NORMAL] java version for minecraft $VERSION undefined!\n"		#
-     printf "[$YELLOW WARN $NORMAL] unable to check against minecraft version...\n"		#
-     printf "[$YELLOW WARN $NORMAL]$RED install correct java version for minecraft $VERSION manually! $NORMAL\n"		#
+     if [ "$1" == "" ]
+      then
+       printf "[$YELLOW WARN $NORMAL] java version for minecraft $VERSION undefined!\n"		#
+       printf "[$YELLOW WARN $NORMAL] unable to check against minecraft version...\n"		#
+       printf "[$YELLOW WARN $NORMAL]$RED install correct java version for minecraft $VERSION manually! $NORMAL\n"		#
+     fi
      exit;;                                             					#
    esac												#
 fi												#
