@@ -26,15 +26,16 @@ fi								#
 #################################################################
 
 #### GET THE LATEST VERSIONS.JSON FOR COMPARISON ################################################
-curl -s https://launchermeta.mojang.com/mc/game/version_manifest.json | jq > versions.json	#
+if [ ! -f versions.json ]
+ then
+  curl -s https://launchermeta.mojang.com/mc/game/version_manifest.json | jq > versions.json	#
+fi
 #################################################################################################
 
 #### EXTRACT THE CORRESPONDING VERSION.JSON #############################################
 VERSIONURL=$(jq -r ".versions | .[] | select(.id==\"$VERSION\") | .url" versions.json)	#
 if [ "$VERSIONURL" == "" ]								#
  then											#
-  printf "[$YELLOW INFO $NORMAL] $RED$VERSION$NORMAL does not exist!\n"			#
-  rm versions.json									#
   exit											#
  else											#
   printf "[$GREEN INFO $NORMAL] $RED$VERSION$NORMAL is a valid version!\n"		#

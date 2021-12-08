@@ -9,8 +9,7 @@
 #### STATIC VARIABELS AND DIRECTORIES ###################################
 #########################################################################
 SCRIPTS="MinecraftServerScripts-0_3_0"      # -ORIGINAL-SCRIPTS-FOLDER- #
-SPACER_1='='								#
-SPACER_2=''								#
+SPACER_1="="								#
 #########################################################################
 
 #### SET SOME COLOURS ####
@@ -26,13 +25,13 @@ dynline1() {									#
 if [ "$SSH_TTY" != "" ]								#
  then										#
   WIDTHMAX=$(stty -a <$SSH_TTY | grep -Po '(?<=columns )\d+')   		#
+ else										#
+ WIDTHMAX=$(tput cols)								#
+fi										#
   for (( WIDTH=1; WIDTH<=$WIDTHMAX; WIDTH++ ))                 			#
    do                                                           		#
     printf "$SPACER_1"                                          		#
   done                                                          		#
- else										#
-  printf "==================================================================\n" #
-fi										#
 }										#
 #################################################################################
 
@@ -62,28 +61,27 @@ fi								#
 #### CHECK IF IT IS A NEW SERVER / SERVER DIR OR JUST REPLACE THE OLD SCRIPTS ###################################
 if [ -d ~/$SERVER ]												#
  then														#
-  $YELLOW dynline1 $NORMAL										#
+  tput setaf 3 && dynline1 && tput sgr0										#
   printf "[$YELLOW WARN $NORMAL] => $RED$SERVER$NORMAL already exits!\n"					#
-  read -t 15 -n 1 -p "[$YELLOW  IN  $NORMAL] [ y / n ]$RED override$NORMAL existing scripts? : " INPUT		#
+  read -t 15 -p "[$YELLOW  IN  $NORMAL] [ y / n ]$RED override$NORMAL existing scripts? : " INPUT		#
   if [ "$INPUT" == "y" ]                                                       					#
    then                                                                         				#
     OVERRIDE="y"												#
-    $YELLOW dynline1 $NORMAL										#
+    tput setaf 3 && dynline1 && tput sgr0										#
    else                                                                         				#
-    $YELLOW dynline1 $NORMAL										#
+    tput setaf 3 && dynline1 && tput sgr0										#
     printf "[$YELLOW SKIP $NORMAL] abbort...\n"									#
     exit													#
   fi														# automaticaly determine type ?
 fi														#
 #################################################################################################################
 
-
-
 #### GET AND SET THE SERVERTYPE #################################################################################
-read -p "[  IN  ] [ vanilla / snapshot / paper / velocity / bukkit / spigot ] ServerType ? : " SERVERTYPE	# no support for: waterfall, bungeecord, ... proxy setup seperate script !/?
+read -p "[  IN  ] [ vanilla / paper ] ServerType ? : " SERVERTYPE						#
+#read -p "[  IN  ] [ vanilla / snapshot / paper / velocity / bukkit / spigot ] ServerType ? : " SERVERTYPE	# no support for: waterfall, bungeecord, ... proxy setup seperate script !/?
 case "$SERVERTYPE" in												#
  "")														#
-  SERVERTYPE="paper"												#
+  SERVERTYPE="vanilla"												#
   printf "[$GREEN  OK  $NORMAL] using default => $SERVERTYPE\n";;						#
  vanilla)													#
   printf "[$GREEN  OK  $NORMAL] using => $SERVERTYPE\n";;							#
@@ -146,7 +144,6 @@ case "$PORT" in                                                 #
 esac                                                            #
 #################################################################
 
-
 #### VANILLA #### GET AND SET THE SERVERVERSION #################################
 if [ "$SERVERTYPE" == "vanilla" ]                                               #  redising check against mojang versions
  then										#
@@ -156,17 +153,21 @@ if [ "$SERVERTYPE" == "vanilla" ]                                               
   case "$VERSION" in                                                            #
    "")                                                                       	# get latest default
     VERSION=${VERSION:-$LATESTRELEASE}                                          #
-    printf "[$GREEN  OK  $NORMAL] using official latest => $VERSION\n";;	#
+    printf "[$GREEN   OK   $NORMAL] using official latest => $VERSION\n";;	#
    *)                                                         	                #
-    printf "[$YELLOW OK $NORMAL] try version => $VERSION , checking...\n"	#
-    UNCHECKED="y"								# UNCHECKED flagg means nothing for now
-    ~/$SCRIPTS/vanilla/optional/versionexits.sh $VERSION			# checks for valid version, if not vaild exits, test worlking exit main script                                                                                #
-    VERSION="$VERSION";;							#
+    printf "[$YELLOW  OK  $NORMAL] trying version => $VERSION , checking...\n"	#
+    EXISTS=$(~/$SCRIPTS/vanilla/optional/versionexits.sh $VERSION)		# checks for valid version, if not vaild exits, test worlking exit main script                                                                                #
+    if [ "$EXISTS" == "" ]
+     then
+      VERSION="$VERSION"
+      UNCHECKED="y"								# UNCHECKED flagg means nothing for now
+     else
+      printf "[ EXIT ] $version is not a valid version \n" #
+    fi
   esac                                                                          #
   rm versions.json								#
 fi                                                                              #
 #################################################################################
-
 
 #### PAPER #### GET AND SET THE SERVERVERSION ###################################################
 if [ "$SERVERTYPE" == "paper" ]									#    add the other server versions
@@ -188,15 +189,15 @@ if [ "$SERVERTYPE" == "paper" ]									#    add the other server versions
    1.12.2)											#	add more versions?
     VERSION="1.12.2"										#
     UNTESTED="y"										#
-    $YELLOW dynline1 $NORMAL										#
+    tput setaf 3 && dynline1 && tput sgr0										#
     printf "[$YELLOW WARN $NORMAL] untested version... trying to setup $VERSION\n"		#
-    $YELLOW dynline1 $NORMAL;;										#
+    tput setaf 3 && dynline1 && tput sgr0;;										#
    1.8.8)											#	add more versions?
     VERSION="1.8.8"										#
     UNTESTED="y"										#
-    $YELLOW dynline1 $NORMAL										#
+    tput setaf 3 && dynline1 && tput sgr0										#
     printf "[$YELLOW WARN $NORMAL] untested version... trying to setup $VERSION\n"		#
-    $YELLOW dynline1 $NORMAL;;										#
+    tput setaf 3 && dynline1 && tput sgr0;;										#
    *)												#
     printf "[$YELLOW SKIP $NORMAL] invalid input abbort...\n"					#
     exit;;											#
@@ -223,14 +224,14 @@ fi												#
 #### REALLY #####################################################################################
 if [ "$UNTESTED" == "y" ] && [ "$OVERRIDE" == "y" ]						#
  then												#
-  $RED dynline1 $NORMAL									#
+  tput setaf 2 && dynline1 && tput sgr0										#
   read -t 10 -n 1 -p "[$RED  IN  $NORMAL] [ y / n ] you have done your backups? : " INPUT	#
   if [ "$INPUT" != "y" ]									#
    then												#
     printf "\n"											#
     exit											#
    else												#
-    $RED dynline1 $NORMAL								#
+    tput setaf 2 && dynline1 && tput sgr0										#
   fi												#
   ###############################################################################################
   read -t 10 -n 1 -p "[$RED  IN  $NORMAL] [ y / n ] you really know what you doing? : " INPUT	#
@@ -239,7 +240,7 @@ if [ "$UNTESTED" == "y" ] && [ "$OVERRIDE" == "y" ]						#
     printf "\n"											#
     exit											#
    else												#
-    $RED dynline1 $NORMAL								#
+    tput setaf 2 && dynline1 && tput sgr0										#
   fi												#
 fi												#
 #################################################################################################
@@ -290,10 +291,10 @@ if [ "$UNTESTED" == "y" ]								#
   #######################################################################################
   ./applyupdate.sh									#
   #######################################################################################
-  $RED dynline1 $NORMAL								#
+  tput setaf 2 && dynline1 && tput sgr0										#
   printf "[$RED WARN $NORMAL] use this setup at your own risk!\n"			#
   printf "[$RED WARN $NORMAL] some scripts may be not compatible!\n"			#
-  $RED dynline1 $NORMAL								#
+  tput setaf 2 && dynline1 && tput sgr0										#
   printf "[$GREEN DONE $NORMAL] setup done...\n"					#
   exit											#
 fi											#
@@ -342,7 +343,7 @@ if [ "$OVERRIDE" == "" ]						#
   printf "[ INFO ] starting $SERVER for the first time...\n" 		#  stop server as soon as possible again
   printf "[ INFO ] this may take a while, please be patient...\n" 	#
   ./start.sh -b								#
-  sleep 30								#
+  sleep 10								#
   printf "[ WAIT ] "							#
   RUN=$(screen -list | grep -o "$SERVER");                              #
   while [ "$RUN" != "" ]                                                #
