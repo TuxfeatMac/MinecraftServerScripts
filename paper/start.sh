@@ -56,7 +56,7 @@ fi                                                           		#
 #### START SERVER #######################################################################
 printf "[ INFO ] [$YELLOW  START  $NORMAL] starting $SERVER with $RAM Ram now...\n"	#
 cd ~/$SERVER/                                              				#
-screen -mdS $SERVER java -Xmx$RAM -Xms$RAM -jar paper-$VERSION-*.jar --nogui	 	#
+screen -mdS $SERVER java -Xmx$RAM -Xms$RAM -jar paper-$VERSION-*.jar nogui	 	#
 #########################################################################################
 
 #### FORCED BACKGROUND START ####
