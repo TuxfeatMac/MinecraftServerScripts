@@ -248,7 +248,7 @@ mkdir -p ~/$SERVER 					#
 mkdir -p ~/$SERVER/scripts				#
 cp ~/$SCRIPTS/common/*.sh ~/$SERVER/scripts/		#
 cp ~/$SCRIPTS/$SERVERTYPE/*.sh ~/$SERVER/scripts/	#
-#cd ~/$SERVER/scripts					#
+cd ~/$SERVER/scripts					#
 #########################################################
 
 #### SETUP NEW SCRIPTS TO MATCH THE NEW / OLD SERVER ####################################
