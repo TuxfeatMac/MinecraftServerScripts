@@ -1,10 +1,13 @@
-#!/bin/bash
+# !/bin/bash
+#################################################################
+# Name:         versionexist.sh       Version:      0.3.0       #
+# Created:      05.12.2021            Modified:     08.12.2021  #
+# Author:       Joachim Traeuble                                #
+# Purpose:      get latest avaiable mincraft release version    #
+#################################################################
 
-#### GET THE LATEST VERSIONS.JSON #######################################################################
-curl -s https://launchermeta.mojang.com/mc/game/version_manifest.json | jq > versions.json      	#
-LATEST=$(jq -r '.latest.release' versions.json)                                                 	#
-LATESTSNAP=$(jq -r '.latest.snapshot' versions.json)                                            	#
-ALLSNAP=$(jq  -r '.versions | .[] | select(.type == "snapshot" ) | .id' versions.json | xargs)		#
-ALLRELEASE=$(jq  -r '.versions | .[] | select(.type == "release" ) | .id' versions.json | xargs)	#
-#########################################################################################################
-printf "$LATEST\n"
+#### GET THE LATEST VERSIONS.JSON AND OUT PUT THE LATEST RELEAS VERSION #########################
+curl -s https://launchermeta.mojang.com/mc/game/version_manifest.json | jq > versions.json	#
+LATEST=$(jq -r '.latest.release' versions.json)                                                	#
+printf "$LATEST\n"										#
+#################################################################################################

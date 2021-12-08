@@ -19,26 +19,28 @@ if [ "$1" == "" ]						#
  then								#
   printf "[ INFO ] no version provided... try:\n"		#
   printf "[ INFO ] ./versionexist.sh <VERSION>\n"		#
-  exit
+  printf "[ INFO ] No output = not valid\n"			#
+  exit								#
  else								#
   VERSION=$1							#
 fi								#
 #################################################################
 
 #### GET THE LATEST VERSIONS.JSON FOR COMPARISON ################################################
-if [ ! -f versions.json ]
- then
+if [ ! -f versions.json ]									#
+ then												#
   curl -s https://launchermeta.mojang.com/mc/game/version_manifest.json | jq > versions.json	#
-fi
+fi												#
 #################################################################################################
 
 #### EXTRACT THE CORRESPONDING VERSION.JSON #############################################
-VERSIONURL=$(jq -r ".versions | .[] | select(.id==\"$VERSION\") | .url" versions.json)	#
-if [ "$VERSIONURL" == "" ]								#
+VERSION=$(jq -r ".versions | .[] | select(.id==\"$VERSION\") | .id,.id" versions.json)	#
+if [ "$VERSION" == "" ]									#
  then											#
+  # VERSION NOT KNOWN BY MOJANG, NO OUTPUT WILL BE USED BY SETUP.SH AS INDICATOR	#
   exit											#
  else											#
-  printf "[$GREEN INFO $NORMAL] $RED$VERSION$NORMAL is a valid version!\n"		#
+  printf "[$GREEN INFO $NORMAL] is a valid version!\n"		#
 fi											#
 #########################################################################################
 
