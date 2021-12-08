@@ -26,22 +26,22 @@ dynline1() {							#
 if [ "$SSH_TTY" != "" ]						#
  then								#
   WIDTHMAX=$(stty -a <$SSH_TTY | grep -Po '(?<=columns )\d+')   #
+  for (( WIDTH=1; WIDTH<=$WIDTHMAX; WIDTH++ ))                  #
+   do                                                           #
+    printf "$SPACER_1"                                          #
+  done                                                          #
  else								#
-  WIDTHMAX=64  # NO SSH FIXED					#
+  printf "==================================================\n" #
 fi								#
-for (( WIDTH=1; WIDTH<=$WIDTHMAX; WIDTH++ ))                    #
- do                                                             #
-  printf "$SPACER_1"                                            #
-done                                                            #
 }								#
 #################################################################
 
 #### DISPLAY INFOS ##############################################################
-dynline1
+dynline1									#
 printf "| This script can be used to set up a new Server or to \n"		#
 printf "| replace the old scripts with a new script version    \n"		#
-printf "|	     $GREY created by Joachim Traeuble	$NORMAL \n"	#
-dynline1
+printf "|	     $GREY created by Joachim Traeuble	$NORMAL \n"		#
+dynline1									#
 #################################################################################
 
 #### BASIC DEPENDENCY CHECK #####################################
