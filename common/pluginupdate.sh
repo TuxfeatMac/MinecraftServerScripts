@@ -71,12 +71,13 @@ for DIR in $UDIR $UPDIR $NPDIR $MPDIR $TPDIR                                    
 done                                                                    	#
 #################################################################################
 
-#### SKIP IF VANILLA SERVER NO PLUGINS ##
-if [ $SERVERTYPE == "vanilla" ]         #
- then                                   #
-  exit                                  #
-fi                                      #
-#########################################
+#### SKIP IF VANILLA SERVER NO PLUGINS ##################
+if [ $SERVERTYPE == "vanilla" ]         		#
+ then                                   		#
+  printf "[$RED SKIP $NORMAL] vanilla, no plugins.\n"	#
+  exit                                  		#
+fi                  			                #
+#########################################################
 
 #### CHECK VERSION  #############################################################################
 if [ "$VERSION" != "1.18" ]									# add compatibility list
