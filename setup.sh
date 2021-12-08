@@ -22,7 +22,7 @@ GREY=$(tput setaf 8)     #
 ##########################
 
 #### DEFINE DYINAMIC SEPERATOR LINE #############################
-dynline1 () {							#
+dynline1() {
 WIDTHMAX=$(stty -a <$SSH_TTY | grep -Po '(?<=columns )\d+')     #
 for (( WIDTH=1; WIDTH<=$WIDTHMAX; WIDTH++ ))                    #
  do                                                             #
@@ -32,11 +32,11 @@ done                                                            #
 #################################################################
 
 #### DISPLAY INFOS ##############################################################
-dnyline1
+dynline1
 printf " | This script can be used to set up a new Server or to \n"		#
 printf " | replace the old scripts with a new script version    \n"		#
 printf " |	     $GREY created by Joachim Traeuble	$NORMAL \n"	#
-dnyline1
+dynline1
 #################################################################################
 
 #### BASIC DEPENDENCY CHECK #####################################
@@ -57,15 +57,15 @@ fi								#
 #### CHECK IF IT IS A NEW SERVER / SERVER DIR OR JUST REPLACE THE OLD SCRIPTS ###################################
 if [ -d ~/$SERVER ]												#
  then														#
-  $YELLOW dnyline1 $NORMAL										#
+  $YELLOW dynline1 $NORMAL										#
   printf "[$YELLOW WARN $NORMAL] => $RED$SERVER$NORMAL already exits!\n"					#
   read -t 15 -n 1 -p "[$YELLOW  IN  $NORMAL] [ y / n ]$RED override$NORMAL existing scripts? : " INPUT		#
   if [ "$INPUT" == "y" ]                                                       					#
    then                                                                         				#
     OVERRIDE="y"												#
-    $YELLOW dnyline1 $NORMAL										#
+    $YELLOW dynline1 $NORMAL										#
    else                                                                         				#
-    $YELLOW dnyline1 $NORMAL										#
+    $YELLOW dynline1 $NORMAL										#
     printf "[$YELLOW SKIP $NORMAL] abbort...\n"									#
     exit													#
   fi														# automaticaly determine type ?
@@ -183,15 +183,15 @@ if [ "$SERVERTYPE" == "paper" ]									#    add the other server versions
    1.12.2)											#	add more versions?
     VERSION="1.12.2"										#
     UNTESTED="y"										#
-    $YELLOW dnyline1 $NORMAL										#
+    $YELLOW dynline1 $NORMAL										#
     printf "[$YELLOW WARN $NORMAL] untested version... trying to setup $VERSION\n"		#
-    $YELLOW dnyline1 $NORMAL										#
+    $YELLOW dynline1 $NORMAL										#
    1.8.8)											#	add more versions?
     VERSION="1.8.8"										#
     UNTESTED="y"										#
-    $YELLOW dnyline1 $NORMAL										#
+    $YELLOW dynline1 $NORMAL										#
     printf "[$YELLOW WARN $NORMAL] untested version... trying to setup $VERSION\n"		#
-    $YELLOW dnyline1 $NORMAL										#
+    $YELLOW dynline1 $NORMAL										#
    *)												#
     printf "[$YELLOW SKIP $NORMAL] invalid input abbort...\n"					#
     exit;;											#
@@ -218,14 +218,14 @@ fi												#
 #### REALLY #####################################################################################
 if [ "$UNTESTED" == "y" ] && [ "$OVERRIDE" == "y" ]						#
  then												#
-  $RED dnyline1 $NORMAL									#
+  $RED dynline1 $NORMAL									#
   read -t 10 -n 1 -p "[$RED  IN  $NORMAL] [ y / n ] you have done your backups? : " INPUT	#
   if [ "$INPUT" != "y" ]									#
    then												#
     printf "\n"											#
     exit											#
    else												#
-    $RED dnyline1 $NORMAL								#
+    $RED dynline1 $NORMAL								#
   fi												#
   ###############################################################################################
   read -t 10 -n 1 -p "[$RED  IN  $NORMAL] [ y / n ] you really know what you doing? : " INPUT	#
@@ -234,7 +234,7 @@ if [ "$UNTESTED" == "y" ] && [ "$OVERRIDE" == "y" ]						#
     printf "\n"											#
     exit											#
    else												#
-    $RED dnyline1 $NORMAL								#
+    $RED dynline1 $NORMAL								#
   fi												#
 fi												#
 #################################################################################################
@@ -259,7 +259,7 @@ printf "[$GREEN DONE $NORMAL] scripts updated and in place\n"		#
 #### UNTESTED SETUP #####################################################################
 if [ "$UNTESTED" == "y" ]								#
  then											#
-  dnyline1
+  dynline1
   printf "[ INFO ] creating nessesary dirs...\n"					#
   mkdir ~/$SERVER/plugins > /dev/null 2>&1						#
   mkdir ~/$SERVER/scripts/update > /dev/null 2>&1					#
@@ -270,25 +270,25 @@ if [ "$UNTESTED" == "y" ]								#
   mkdir ~/$SERVER/scripts/update/plugins/temp > /dev/null 2>&1				#
   printf "[$GREEN DONE $NORMAL] dirs created!\n"					#
   #######################################################################################
-  dnyline1
+  dynline1
   printf "[ INFO ] accepting the EULA...\n"						#
   touch ~/$SERVER/eula.txt								#
   printf "eula=true" > ~/$SERVER/eula.txt						#
   printf "[$GREEN INFO $NORMAL] EULA accepted!\n"					#
-  dnyline1
+  dynline1
   #######################################################################################
   ./serverupdate.sh									#
-  dnyline1
+  dynline1
   #######################################################################################
   ./pluginupdate.sh									#
-  dnyline1
+  dynline1
   #######################################################################################
   ./applyupdate.sh									#
   #######################################################################################
-  $RED dnyline1 $NORMAL								#
+  $RED dynline1 $NORMAL								#
   printf "[$RED WARN $NORMAL] use this setup at your own risk!\n"			#
   printf "[$RED WARN $NORMAL] some scripts may be not compatible!\n"			#
-  $RED dnyline1 $NORMAL								#
+  $RED dynline1 $NORMAL								#
   printf "[$GREEN DONE $NORMAL] setup done...\n"					#
   exit											#
 fi											#
@@ -297,7 +297,7 @@ fi											#
 #### FIRSTRUN SERVER SETUP ##############################################
 if [ "$OVERRIDE" == "" ]						#
  then									#
-  dnyline1
+  dynline1
   printf "[ INFO ] this is a new Server!\n"				#
   #######################################################################
   printf "[ INFO ] creating nessesary dirs...\n"			#
@@ -310,30 +310,30 @@ if [ "$OVERRIDE" == "" ]						#
   mkdir ~/$SERVER/scripts/update/plugins/temp				#
   printf "[$GREEN DONE $NORMAL] dirs created!\n"			#
   #######################################################################
-  dnyline1
+  dynline1
   ./checkdependencies.sh						#
-  dnyline1
+  dynline1
   printf "[ INFO ] accepting the EULA...\n"				#
   touch ~/$SERVER/eula.txt						#
   printf "eula=true" > ~/$SERVER/eula.txt				#
   printf "[$GREEN INFO $NORMAL] EULA accepted!\n"			#
   #######################################################################
-  dnyline1
+  dynline1
   ./selectplugins.sh							#
   #######################################################################
-  dnyline1
+  dynline1
   ./serverupdate.sh							#
   #######################################################################
-  dnyline1
+  dynline1
   ./pluginupdate.sh							#
   #######################################################################
-  dnyline1
+  dynline1
   ./applyupdate.sh							#
   #######################################################################
   touch ~/$SERVER/server.properties					#
   printf "server-port=$PORT" > ~/$SERVER/server.properties		#
   printf "[$GREEN INFO $NORMAL] Server Port set to $PORT\n"		#  fixed 25500 for now
-  dnyline1
+  dynline1
   printf "[ INFO ] starting $SERVER for the first time...\n" 		#  stop server as soon as possible again
   printf "[ INFO ] this may take a while, please be patient...\n" 	#
   ./start.sh -b								#
@@ -350,19 +350,19 @@ if [ "$OVERRIDE" == "" ]						#
   done                                                                  #
   printf "\n[$GREEN DONE $NORMAL] $SERVER is down again!\n"		#
   #######################################################################
-  dnyline1
+  dynline1
   printf "[ INFO ] configrue your Server Settings\n"	 		#  ask for settings ?
   ./settings.sh -h							#
   #######################################################################  implement settings modifing
  else									#
- dnyline1
+ dynline1
  #./selectplugins.sh							#
 fi									#
 #########################################################################  configure settings
 
 #### DISPLAY FINAL INFOS ################################################
-dnyline1
+dynline1
 printf "[$GREEN DONE $NORMAL] setup complete!\n"			#
-dnyline1
+dynline1
 printf "[ INFO ] use ~/$SERVER/scripts/start.sh to start server now\n"	#
 #########################################################################
