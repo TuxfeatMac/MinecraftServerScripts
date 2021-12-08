@@ -66,7 +66,7 @@ if [ "$JAVA" == "" ]
    JVER=$(java -version 2>&1 | grep version | cut -d " " -f 3 | tr -d '"')			#
     case $VERSION in										#
     '1.18')											# add the other popular versions....
-     if [ "$JVER" != "17" ]									#
+     if [ "$(echo ${$JVER:0:2})" != "17" ]							#
       then											#
        printf "[ INFO ] java version $JVER found.\n"						#
        printf "[$YELLOW WARN $NORMAL] to run this server need java version < 17!\n"		#
