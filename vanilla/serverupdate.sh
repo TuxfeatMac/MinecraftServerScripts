@@ -1,7 +1,7 @@
 #!/bin/bash
 #################################################################
 # Name:         serverupdate.sh       Version:      0.3.0       #
-# Created:      05.12.2021            Modified:     05.12.2021  #
+# Created:      05.12.2021            Modified:     08.12.2021  #
 # Author:       Joachim Traeuble                                #
 # Purpose:      fetching the latest paper server 	        #
 #################################################################
@@ -13,7 +13,6 @@ VERSION=""				#
 #########################################
 
 #### SET SOME COLOURS ####
-##########################
 NORMAL=$(tput sgr0)      #
 RED=$(tput setaf 1)      #
 GREEN=$(tput setaf 2)    #
@@ -21,13 +20,11 @@ YELLOW=$(tput setaf 3)   #
 ##########################
 
 #### STATIC VARIABELS AND DIRECTORIES ###########
-#################################################
 UDIR=~/$SERVER/scripts/update/			#
 USDIR=~/$SERVER/scripts/update/vanilla/		#
 #################################################
 
 #### CHECK SETUP ################################################
-#################################################################
 for VAR in "$SERVER" "$VERSION"					#
  do								#
   if [ "$VAR" == "" ]                                  		#
@@ -39,7 +36,6 @@ done								#
 #################################################################
 
 #### CHECK DIRS FOLDER OR CREATE IT #############################################
-#################################################################################
 for DIR in $UDIR $USDIR								#
  do										#
   if [ ! -d "$DIR" ]                                                            #
@@ -59,7 +55,6 @@ done										#
 #################################################################################
 
 #### CHECK IF SERVER IS RUNNING IF SO INFORM USERS ON SERVER ####################
-#################################################################################
 RUN=$(screen -list | grep -o "$SERVER")                 			#
 if [ "$RUN" == "$SERVER" ]                              			#
  then                                                   			#
@@ -74,20 +69,17 @@ printf "[$GREEN DONE $NORMAL] fetched latest manifest from Mojang\n"            
 LATEST=$(jq -r '.latest.release' versions.json)							#
 #################################################################################################
 
-
-if [ "$VERSION" != "$LATEST" ]
- then
-   #### CHECK IF SERVER IS RUNNING IF SO INFORM USERS ON SERVER ####################
+#### DOWNLOAD SERVER ONLY IF NONE EXISTENT OR NEWER VERSION IS AVAIABLE #########
+if [ "$VERSION" != "$LATEST" ] || [ ! -f ~/$SERVER/*.jar ]			#
+ then										#
    if [ "$RUN" == "$SERVER" ]                              			#
     then                                                   			#
      printf "[ INFO ] $SERVER is running... also informing users...\n"		#
      screen -S $SERVER -X stuff 'say [Info] downloading Server updates...\n'	#
    fi                                                     				#
-   #################################################################################
    ./serverdownloader.sh $VERSION
    mv vanilla-*.jar $USDIR
 
-   #### CHECK IF SERVER IS RUNNING IF SO INFORM USERS ON SERVER ############
    if [ "$RUN" == "$SERVER" ]                                              #
     then                                                                   #
      screen -S $SERVER -X stuff 'say [Info] Download erfolgreich!\n' 	#
@@ -95,15 +87,10 @@ if [ "$VERSION" != "$LATEST" ]
 
  else
   printf "[$GREEN DONE $NORMAL] Ver.: $VERSION is the latest version.\n"
-  #### CHECK IF SERVER IS RUNNING IF SO INFORM USERS ON SERVER ##################
   if [ "$RUN" == "$SERVER" ]                                              	#
    then                                                                   	#
    screen -S $SERVER -X stuff 'say [Info] Version: $VERSION ist aktuell.\n' 	#
   fi                                                                      	#
-  ###############################################################################
-
 fi
-
-
 
 #### EOF ####
