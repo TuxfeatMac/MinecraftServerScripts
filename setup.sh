@@ -21,20 +21,20 @@ YELLOW=$(tput setaf 3)   #
 GREY=$(tput setaf 8)     #
 ##########################
 
-#### DEFINE DYINAMIC SEPERATOR LINE #############################
-dynline1() {							#
-if [ "$SSH_TTY" != "" ]						#
- then								#
-  WIDTHMAX=$(stty -a <$SSH_TTY | grep -Po '(?<=columns )\d+')   #
-  for (( WIDTH=1; WIDTH<=$WIDTHMAX; WIDTH++ ))                  #
-   do                                                           #
-    printf "$SPACER_1"                                          #
-  done                                                          #
- else								#
-  printf "==================================================\n" #
-fi								#
-}								#
-#################################################################
+#### DEFINE DYINAMIC SEPERATOR LINE #############################################
+dynline1() {									#
+if [ "$SSH_TTY" != "" ]								#
+ then										#
+  WIDTHMAX=$(stty -a <$SSH_TTY | grep -Po '(?<=columns )\d+')   		#
+  for (( WIDTH=1; WIDTH<=$WIDTHMAX; WIDTH++ ))                 			#
+   do                                                           		#
+    printf "$SPACER_1"                                          		#
+  done                                                          		#
+ else										#
+  printf "==================================================================\n" #
+fi										#
+}										#
+#################################################################################
 
 #### DISPLAY INFOS ##############################################################
 dynline1									#
