@@ -61,7 +61,7 @@ if [ "$JAVA" == "" ]
  then                                                                                         	#
   printf "\n[$YELLOW WARN $NORMAL] to run this server and scripts you need java !\n"		#
   printf "\n[ INFO ] installing default java jdk headless via apt\n"                            #
-  sudo apt install -y default-jdk-headless							#
+  sudo apt install -y default-jdk							#
   else												#
    JVER=$(java -version 2>&1 | grep version | cut -d " " -f 3 | tr -d '"')			#
     case $VERSION in										#
@@ -72,7 +72,7 @@ if [ "$JAVA" == "" ]
        printf "[$YELLOW WARN $NORMAL] to run this server need java version < 17!\n"		#
        printf "[ INFO ] installing java 17 via apt\n"                                       	#
        printf "$SPACER_1"									#
-       sudo apt install -y openjdk-17-jdk-headless						#
+       sudo apt install -y openjdk-17-jdk						# coreprotect will need jdk x11 else lib bla missing...
        printf "$SPACER_1"									#
       else											#
        printf "[  OK  ] $JAVA\t> $JVER\n"                                            		#
