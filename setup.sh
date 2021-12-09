@@ -8,9 +8,9 @@
 
 #### STATIC VARIABELS AND DIRECTORIES ###################################
 #########################################################################
-SCRIPTS="0_3_0-scripts"      		     # SCRIPTS-FOLDER-DEV       #
+#SCRIPTS="0_3_0-scripts"      		     # SCRIPTS-FOLDER-IN-DEV    #
 #SCRIPTS="MinecraftServerScripts"            # SCRIPTS-FOLDER-GIT-CLONE #
-#SCRIPTS="MinecraftServerScripts-0_3_0"      # SCRIPTS-FOLDER-GIT-ZIP   #
+SCRIPTS="MinecraftServerScripts-0_3_0"       # SCRIPTS-FOLDER-GIT-ZIP   #
 SPACER_1="="								#
 #########################################################################
 
@@ -249,6 +249,7 @@ fi												#
 mkdir -p ~/$SERVER 					#
 mkdir -p ~/$SERVER/scripts				#
 cp ~/$SCRIPTS/common/*.sh ~/$SERVER/scripts/		#
+cp ~/$SCRIPTS/stats/*.sh ~/$SERVER/scripts/		# <-- New Feature Early alpha
 cp ~/$SCRIPTS/$SERVERTYPE/*.sh ~/$SERVER/scripts/	#
 cd ~/$SERVER/scripts					#
 #########################################################

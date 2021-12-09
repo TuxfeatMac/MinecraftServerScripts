@@ -24,7 +24,7 @@ SPACER_1="=========================================================\n"  #
 
 #### CHECK TOOLS ################################################################################
 printf "[ INFO ] checking base dependencies... \n"							#
-PKGS='screen curl jq unzip rrdtool'								#
+PKGS='screen curl jq unzip rrdtool figlet sudo'								#
 for PKG in $PKGS										#
  do												#
   INSTALLED=$(command -v $PKG | cut -d "/" -f 4)                                     		#
