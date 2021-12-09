@@ -8,7 +8,9 @@
 
 #### STATIC VARIABELS AND DIRECTORIES ###################################
 #########################################################################
-SCRIPTS="MinecraftServerScripts-0_3_0"      # -ORIGINAL-SCRIPTS-FOLDER- #
+SCRIPTS="0_3_0-scripts"      		     # SCRIPTS-FOLDER-DEV       #
+#SCRIPTS="MinecraftServerScripts"            # SCRIPTS-FOLDER-GIT-CLONE #
+#SCRIPTS="MinecraftServerScripts-0_3_0"      # SCRIPTS-FOLDER-GIT-ZIP   #
 SPACER_1="="								#
 #########################################################################
 

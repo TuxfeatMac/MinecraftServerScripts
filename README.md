@@ -10,6 +10,15 @@ Script's musst be placed in home directory.
 5. Follow instructions.
 6. Enjoy your MinecraftServer
 
+or
+
+0. cd ~
+1. git clone https://github.com/TuxfeatMac/MinecraftServerScripts
+2. cd MinecraftServerScripts
+3. nano setup.sh
+4. change line: SCRIPTS="MinecraftServerScripts-0_3_0"   to: SCRIPTS="MinecraftServerScripts" 
+5. ./setup.sh
+6. Follow instructions.
 
 Auto start / daily backup / update / restart via crontab
 
