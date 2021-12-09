@@ -35,8 +35,16 @@ if [ "$SERVERCOUNT" == "" ]
 fi									#
 ####clear ?
 
+#### DEFINE DYINAMIC SEPERATOR LINE #############################################
+if [ "$SSH_TTY" != "" ]                                                         #
+ then                                                                           #
+  WIDTHMAX=$(stty -a <$SSH_TTY | grep -Po '(?<=columns )\d+')                   #
+ else                                                                           #
+ WIDTHMAX=$(tput cols)                                                          #
+fi                                                                              #
+
 #### PRINT DYNAMIC HEADER1 ######################################
-WIDTHMAX=$(stty -a <$SSH_TTY | grep -Po '(?<=columns )\d+')	#
+#WIDTHMAX=$(stty -a <$SSH_TTY | grep -Po '(?<=columns )\d+')	#
 for (( WIDTH=1; WIDTH<=$WIDTHMAX; WIDTH++ ))			#
  do								#
   printf "$SPACER_1"						#

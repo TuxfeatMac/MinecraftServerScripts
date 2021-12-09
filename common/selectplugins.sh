@@ -80,16 +80,16 @@ esac								#   rm on unselect
 #################################################################
 
 #### COREPROTECT 20.1 ################################################### not working dependencies broken ?
-#read -n 1 -p "[  IN  ] [ y / n ] Install CoreProtect? : " COREPROTECT	#
-#if [ "$COREPROTECT" == "y" ]						#
-# then									#
-#  cp $SPDIR/CoreProtect-20.1*.jar $MPDIR/				#
-#  printf "\n"								#
-#  printf "\n[$GREEN DONE $NORMAL] copied in place...\n"		#
+read -n 1 -p "[  IN  ] [ y / n ] Install CoreProtect? : " COREPROTECT	#
+if [ "$COREPROTECT" == "y" ]						#
+ then									#
+  cp $SPDIR/CoreProtect-20.1*.jar $MPDIR/				#
+  printf "\n"								#
+  printf "\n[$GREEN DONE $NORMAL] copied in place...\n"		#
 # cp common config.yml ? ####						#
-# else									#
-#  printf "\n"								#
-#fi									#
+ else									#
+  printf "\n"								#
+fi									#
 #########################################################################
 
 #### AUTOMATIC DOWNLOADABLE PLUGINS #############################################
