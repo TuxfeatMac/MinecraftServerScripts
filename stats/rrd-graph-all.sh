@@ -6,19 +6,19 @@
 # Purpose:      generate graphs from rrd for all online servers #
 #################################################################
 
+MCUSER=""
+
 SERVERS=$(screen -list | cut -d '.' -f 2 | cut -f 1 | cut -d ':' -f 2 | xargs)
 
 TIMES="1h 1d 1w 1m 1y"
 
 SPACER1="==========================================\n"
 
-# check iff rrd exist else  error
-
 for SERVER in $SERVERS
 do
  for TIME in $TIMES
  do
-  HOMEDIR="/home/minecraft/"  # get through pwd ?
+  HOMEDIR="/home/$MCUSER/"  # get through pwd ?
   PICDIR="$HOMEDIR$SERVER/scripts/stats/"
   PICNAME="$PICDIR$SERVER"
   RRDDIR="$HOMEDIR$SERVER/scripts/stats/"
@@ -27,7 +27,7 @@ do
 
  printf "$SPACER1"
   printf "[ INFO ] Genrating $TIME Graphs for $SERVER\n"
-  if [ ! -f $RRDDATA_Stats.rrd ]
+  if [ -f $RRD ]
    then
     rrdtool graph $PICNAME-TPS-$TIME.png --start now-$TIME --end now \
     DEF:tps=$RRD:tps:AVERAGE \
@@ -41,10 +41,10 @@ do
     DEF:usedmem=$RRD:usedmem:AVERAGE \
     AREA:usedmem#111000:"Mem" > /dev/null
   else
-   printf "[ SKIP ] NO RRD FOUND create a rrd with rrd-create.sh"
-   printf "[ DONE ] Graphs for $SERVER are ready\n"
+   printf "[ SKIP ] NO RRD FOUND create a rrd with rrd-create.sh\n"
  fi
  done
+printf "[ DONE ] Graphs for $SERVER are ready\n"
 done
 
 printf "$SPACER1"

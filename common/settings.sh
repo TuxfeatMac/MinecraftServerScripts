@@ -278,6 +278,28 @@ case $VIEWDISTANCE in							#
 esac									#
 #########################################################################
 
+#### SERVER SIMULATIONDISTANCE ##########################################
+printf "=========================================================\n"    #
+printf "[ INFO ] Simulation Distance                         <---\n"    #
+OLD_SIMULATIONDISTANCE=$(grep ^simulation-distance $SERVERPROPS | cut -d\= -f2)     #
+printf "[  IS  ] => $OLD_VIEWDISTANCE chunks\n"                         #
+read -p "[  IN  ] [ 3 - 32 ] : " SIMULATIONDISTANCE                      #
+case $SIMULATIONDISTANCE in                                                   #
+ [0-2])                                                                 #
+  SIMULATIONDISTANCE=3                                                        #
+  printf "[$YELLOW INFO $NORMAL] Minimum is 3! setting it to 3\n";;     #
+ [3-9]);;                                                               #
+ 1[0-9]|2[0-9]|3[0-2])                                                  #
+  printf "\n";;                                                         #
+ "")                                                                    #
+  SIMULATIONDISTANCE=$OLD_VIEWDISTANCE                                        #
+  printf "[ SKIP ] unchanged...\n";;                                    #
+ *)                                                                     #
+  SIMULATIONDISTANCE=$OLD_VIEWDISTANCE                                        #
+  printf "\n[$YELLOW SKIP $NORMAL] wrong input... unchanged...\n";;     #
+esac                                                                    #
+#########################################################################
+
 #### PAPER NO-TICK-VIEW-DISTANCE ################################################################################################
 if [ "$SERVERTYPE" = "paper" ]													#
  then																#
@@ -605,11 +627,22 @@ if [ "$OLD_MAXPLAYER" != "$MAXPLAYER" ]								#
   printf "> MaxPlayers:\t\t$OLD_MAXPLAYER\t=>\t$MAXPLAYER\n"
   CHANGE="y"
 fi
+
+
+
+
 if [ "$OLD_VIEWDISTANCE" != "$VIEWDISTANCE" ]
  then
   printf "> ViewDistance:\t\t$OLD_VIEWDISTANCE\t=>\t$VIEWDISTANCE\n"
   CHANGE="y"
 fi
+
+if [ "$OLD_SIMULATIONDISTANCE" != "$SIMULATIONDISTANCE" ]
+ then
+  printf "> SimulationDistance:\t\t$OLD_SIMULATIONDISTANCE\t=>\t$SIMULATIONDISTANCE\n"
+  CHANGE="y"
+fi
+
 if [ "$OLD_VIEWDISTANCENOTICK" != "$VIEWDISTANCENOTICK" ]
  then
   printf "> NoTickViewDistance:\t$OLD_VIEWDISTANCENOTICK\t=>\t$VIEWDISTANCENOTICK\n"	#
@@ -693,6 +726,7 @@ if [ "$SERVERTYPE" == "paper" -o "$SERVERTYPE" == "spigot" -o "$SERVERTYPE" == "
  then
   sed -i "s|^max-players=.*|max-players=$MAXPLAYER|" $SERVERPROPS
   sed -i "s|^view-distance=.*|view-distance=$VIEWDISTANCE|" $SERVERPROPS
+  sed -i "s|^simulation-distance=.*|simulation-distance=$SIMULATIONDISTANCE|" $SERVERPROPS
   sed -i "s|^gamemode=.*|gamemode=$GAMEMODE|" $SERVERPROPS
   sed -i "s|^force-gamemode=.*|force-gamemode=$GAMEMODEFORCE|" $SERVERPROPS
   sed -i "s|^difficulty=.*|difficulty=$DIFFICULTY|" $SERVERPROPS

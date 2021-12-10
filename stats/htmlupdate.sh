@@ -6,8 +6,10 @@
 # Purpose:      generate html sites for all online servers      #
 #################################################################
 
+MCUSER=""
+
 #### SET SERVERSNAMES GET COUNT AND NAMES ###############################
-SERVERS=$(sudo -u minecraft screen -list | cut -d '.' -f 2 | cut -f 1 | cut -d ':' -f 2 | xargs)
+SERVERS=$(sudo -u $MCUSER screen -list | cut -d '.' -f 2 | cut -f 1 | cut -d ':' -f 2 | xargs)
 
 #### SCRIPT IS MENT TO BE TO RUN AS ROOT! NOT AS PI WITH SUDO ###########################################################################
 if [ $USER != root ]
@@ -15,23 +17,47 @@ if [ $USER != root ]
   printf "${RED}PLEASE RUN THIS SCRIPT AS ROOT! DONT USE SUDO! $NORMAL \n"
   exit
 fi
-printf " $YELLOW
-====================================================================
-!    PLEASE DONT USE SUDO, USE SU TO LOGIN TO THE ROOT USER        !
-! PLEASE STOP THIS SCRIPT NOW WITH CONTROL+C IF YOU ARE USING SUDO !
-!               CONTINUING SETUP IN 5 SECONDS...                   !
-====================================================================
-$NORMAL\n" && sleep 5
+#printf " $YELLOW
+#====================================================================
+#!    PLEASE DONT USE SUDO, USE SU TO LOGIN TO THE ROOT USER        !
+#! PLEASE STOP THIS SCRIPT NOW WITH CONTROL+C IF YOU ARE USING SUDO !
+#!               CONTINUING SETUP IN 5 SECONDS...                   !
+#====================================================================
+#$NORMAL\n"
 
-read -p "[  IN  ] update statistic webserver with running servers? :" CONFIRM
-if [ "$CONFIRM" != "y" ]
- then
- printf "abort.\n"
-  exit
-fi
+#read -p -t 5 "[  IN  ] update statistic webserver with running servers? :" CONFIRM
+#if [ "$CONFIRM" == "" ]
+# then
+# printf "abort.\n"
+#  exit
+#fi
 
 ### CLEAN HTML DIR, REMOVES OFFLINE SERVERS
 rm -R /var/www/html/*
+
+#### CREAING MAIN INDEX.HTML WITH LINK TO EVERY ONLINE SERVER #####################################
+sudo printf "<!DOCTYPE html>
+<html>
+<head>
+        <title> Server Statistics </title>
+</head>
+<body>
+        <h2>Minecraft Server Statistics Overview</h2>
+" > /var/www/html/index.html
+
+for SERVER in $SERVERS
+ do
+  sudo printf "        <hr style=\"width:100\%;text-align:left;margin-left:0\">
+        <h3> > <a href=\"/$SERVER.html\">$SERVER</a> </h3>\n
+        <p> <img src=\"/$SERVER/$SERVER-Player-1h.png\" alt=\"Player-1h-PNG-GEN-FAILED\"> <img src=\"/$SERVER/$SERVER-TPS-1h.png\" alt=\"TPS-1h PNG GERN FAILED\"> <img src=\"/$SERVER/$SERVER-RAM-1h.png\" alt=\"RAM-1h PNG GEN FAILED\">  </br>
+" >> /var/www/html/index.html
+done
+
+sudo printf "</body>
+</html>" >> /var/www/html/index.html
+
+
+
 
 #### CREATING DIR FOR EACH SERVER AND ADDING SERVER.HTML ################################################################################################################################################
 for SERVER in $SERVERS
@@ -60,28 +86,9 @@ sudo printf " <!DOCTYPE html>
 printf "[ DONE ] $SERVER $SERVER.html \n"
 done
 
-#### CREAING MAIN INDEX.HTML WITH LINK TO EVERY ONLINE SERVER #####################################
-sudo printf "<!DOCTYPE html>
-<html>
-<head>
-        <title>Minecraft Server Stats Overview</title>
-</head>
-<body>
-        <h2>Minecraft Server Stats Overview</h2>
-" > /var/www/html/index.html
 
-for SERVER in $SERVERS
- do
-  sudo printf "       <h3> > <a href=\"/$SERVER.html\">$SERVER</a> </h3>\n" >> /var/www/html/index.html
-done
-
-sudo printf "</body>
-</html>" >> /var/www/html/index.html
-
-
-#### GENERATING AND UPDATING NEW GRAPHS ####
-
-#sudo /home/minecraft/$SERVER/scripts/rrd-graph-for-alpha.sh
+#### UPDATEING GRAPHS
+sudo /home/$MCUSER/$SERVER/scripts/copygraphshtml.sh
 
 
 

@@ -83,10 +83,9 @@ esac								#   rm on unselect
 read -n 1 -p "[  IN  ] [ y / n ] Install CoreProtect? : " COREPROTECT	#
 if [ "$COREPROTECT" == "y" ]						#
  then									#
+  sed -i "s|COREPROTECT=\"false\"|COREPROTECT=\"true\"|" $SCDIR/pluginupdate.sh	#
   cp $SPDIR/CoreProtect-20.1*.jar $MPDIR/				#
   printf "\n"								#
-  printf "\n[$GREEN DONE $NORMAL] copied in place...\n"		#
-# cp common config.yml ? ####						#
  else									#
   printf "\n"								#
 fi									#
