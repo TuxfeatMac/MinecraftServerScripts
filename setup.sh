@@ -7,11 +7,11 @@
 #################################################################
 
 #### STATIC VARIABELS AND DIRECTORIES ###################################
-#########################################################################
-#SCRIPTS="0_3_0-scripts"      		     # SCRIPTS-FOLDER-IN-DEV    #
+SCRIPTS="0_3_0-scripts"      		     # SCRIPTS-FOLDER-IN-DEV    #
 #SCRIPTS="MinecraftServerScripts"            # SCRIPTS-FOLDER-GIT-CLONE #
-SCRIPTS="MinecraftServerScripts-0_3_0"       # SCRIPTS-FOLDER-GIT-ZIP   #
+#SCRIPTS="MinecraftServerScripts-0_3_0"       # SCRIPTS-FOLDER-GIT-ZIP   #
 SPACER_1="="								#
+MCUSER=$(pwd | cut -d '/' -f 3)						#
 #########################################################################
 
 #### SET SOME COLOURS ####
@@ -65,10 +65,25 @@ if [ -d ~/$SERVER ]												#
  then														#
   tput setaf 3 && dynline1 && tput sgr0										#
   printf "[$YELLOW WARN $NORMAL] => $RED$SERVER$NORMAL already exits!\n"					#
-  read -t 15 -p "[$YELLOW  IN  $NORMAL] [ y / n ]$RED override$NORMAL existing scripts? : " INPUT		#
+  read -t 15 -p "[$YELLOW  IN  $NORMAL] [ y / n ]$RED override$NORMAL /$GREEN update$NORMAL existing scripts? : " INPUT		#
   if [ "$INPUT" == "y" ]                                                       					#
    then                                                                         				#
-    OVERRIDE="y"												#
+    OVERRIDE="y"
+    VERSION=$(grep ^VERSION= /home/minecraft/$SERVER/scripts/start.sh | cut -d\= -f2 | tr -d '"# ' | xargs )
+    RAM=$(grep ^RAM= /home/minecraft/$SERVER/scripts/start.sh | cut -d\= -f2 | tr -d '"# ' | xargs)
+    PORT=$(grep ^server-port= /home/minecraft/$SERVER/server.properties | cut -d '=' -f2)
+    #### DETERMINE SERVERTYPE VIA SERVER.YMLS ####
+    PAPERYML=~/$SERVER/paper.yml
+    SPIGOTYML=~/$SERVER/spigot.yml
+    BUKKITYML=~/$SERVER/bukkit.yml
+    SERVERPROPS=~/$SERVER/server.properties
+    for FILE in $SERVERPROPS $BUKKITYML $SPIGOTYML $PAPERYML                        # <= Order is important for SERVERTYPE!
+     do                                                                             #
+      if [ -f $FILE ]                                                               #
+       then                                                                         #
+        SERVERTYPE=$(ls $FILE | cut -d\/ -f5 | cut -d\. -f1)                        #
+      fi
+    done
     tput setaf 3 && dynline1 && tput sgr0										#
    else                                                                         				#
     tput setaf 3 && dynline1 && tput sgr0										#
@@ -79,7 +94,12 @@ fi														#
 #################################################################################################################
 
 #### GET AND SET THE SERVERTYPE #################################################################################
-read -p "[  IN  ] [ vanilla / paper ] ServerType ? : " SERVERTYPE						#
+
+if [ "$SERVERTYPE" == "" ]
+ then
+  read -p "[  IN  ] [ vanilla / paper ] ServerType ? : " SERVERTYPE						#
+fi
+
 #read -p "[  IN  ] [ vanilla / snapshot / paper / velocity / bukkit / spigot ] ServerType ? : " SERVERTYPE	# no support for: waterfall, bungeecord, ... proxy setup seperate script !/?
 case "$SERVERTYPE" in												#
  "")														#
@@ -108,7 +128,11 @@ esac														#
 #################################################################################################################
 
 #### GET AND SET JAVA SERVER RAM SIZE, FOR start.sh SCRIPT  #####
-read -p "[  IN  ] [ 1024M ] Ram? : " RAM			#
+if [ "$RAM" == "" ]
+ then
+  read -p "[  IN  ] [ 1024M ] Ram? : " RAM			#
+fi
+
 case "$RAM" in							#
  "")								#
   RAM=${RAM:-1024M}						#
@@ -127,7 +151,11 @@ esac								#
 #################################################################
 
 #### GET AND SET THE SERVER PORT FOR FIRSTRUN ###################
-read -p "[  IN  ] [ 25565 ] Port? : " PORT			#
+if [ "$PORT" == "" ]
+ then
+  read -p "[  IN  ] [ 25565 ] Port? : " PORT			#
+fi
+
 case "$PORT" in                                                 #
  "")								#
   PORT=${PORT:-25565}                                           #
@@ -149,9 +177,16 @@ esac                                                            #
 #### VANILLA #### GET AND SET THE SERVERVERSION #################################
 if [ "$SERVERTYPE" == "vanilla" ]                                               #
  then										#
+  if [ "$VERSION" == "" ]
+   then
+    read -p "[  IN  ] [ 1.18 ] Version? : " VERSION						#
+  fi
+
   printf "[ INFO ] fetching vanilla versions...\n"				#
   LATESTRELEASE=$(~/$SCRIPTS/vanilla/optional/getlatestversion.sh)		#
   read -p "[  IN  ] [ "$LATESTRELEASE" ] Version? : " VERSION			#
+
+
   case "$VERSION" in                                                            #
    "")                                                                       	#
     VERSION=${VERSION:-$LATESTRELEASE}                                          #
@@ -173,9 +208,13 @@ fi                                                                              
 
 #### PAPER #### GET AND SET THE SERVERVERSION ###################################################
 if [ "$SERVERTYPE" == "paper" ]									#    add the other server versions
- then												#
-  read -p "[  IN  ] [ 1.18 ] Version? : " VERSION						#
-  case "$VERSION" in										#
+ then
+  if [ "$VERSION" == "" ]
+   then
+    read -p "[  IN  ] [ 1.18 ] Version? : " VERSION						#
+  fi
+
+   case "$VERSION" in										#
    "")												#
     VERSION=${VERSION:-1.18}									#
     printf "[$GREEN  OK  $NORMAL] using default => $VERSION\n";;				#
@@ -260,6 +299,7 @@ sed -i "s|SERVERTYPE=\"\"|SERVERTYPE=\"$SERVERTYPE\"|" ~/$SERVER/scripts/*.sh	#
 sed -i "s|VERSION=\"\"|VERSION=\"$VERSION\"|" ~/$SERVER/scripts/*.sh	#
 sed -i "s|RAM=\"\"|RAM=\"$RAM\"|" ~/$SERVER/scripts/*.sh		#
 sed -i "s|SCRIPTS=\"\"|SCRIPTS=\"$SCRIPTS\"|" ~/$SERVER/scripts/*.sh	# needed ? placeholder
+sed -i "s|MCUSER=\"\"|MCUSER=\"$MCUSER\"|" ~/$SERVER/scripts/*.sh	# needed ? placeholder
 printf "[$GREEN DONE $NORMAL] scripts updated and in place\n"		#
 #########################################################################
 
@@ -361,6 +401,8 @@ if [ "$OVERRIDE" == "" ]						#
   printf "[ INFO ] configrue your Server Settings\n"	 		#  ask for settings ?
   ./settings.sh -h							#
   #######################################################################  implement settings modifing
+  dynline1
+  printf "[ INFO ] use ~/$SERVER/scripts/start.sh to start server now\n"	#
  else									#
  dynline1
  #./selectplugins.sh							#
@@ -370,6 +412,4 @@ fi									#
 #### DISPLAY FINAL INFOS ################################################
 dynline1
 printf "[$GREEN DONE $NORMAL] setup complete!\n"			#
-dynline1
-printf "[ INFO ] use ~/$SERVER/scripts/start.sh to start server now\n"	#
 #########################################################################

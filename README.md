@@ -47,3 +47,16 @@ TLDR => place your coustum plugins in --> ~/"SERVER"/scripts/updates/plugins/man
 If you want to install manual plugins there is one caviat. The pluginupdate.sh will prefetch automatic downloadable plugins.
 The applayupdate.sh will delete all plugins located in ~/"SERVER"/plugins/*.jar ! 
 After deletion the whole pluginset in ~/"SERVER"/scripts/update/plugins/new + ~/"SERVER/scripts/update/plugins/man" wil be copied over to ~/"SERVER/plugins/"
+
+
+Example crontab entrys to automate everything
+#### MineCraft Server Scripts
+## start servers at rebbot
+@reboot minecraft /home/minecraft/Paper/start.sh -b
+## update rrd's for running servers and generate graphs and copy to html
+*/1 * * * * minecraft /home/minecraft/Paper/scripts/serverstats.sh
+*/1 * * * * minecraft /home/minecraft/Paper/scripts/rrd-graph-all.sh
+*/1 * * * * root /home/minecraft/Paper/scripts/copygraphshtml.sh
+## check for vanished / new servers and update index.html
+*/5 * * * * root /home/minecraft/Paper/scripts/htmlupdate.sh
+#

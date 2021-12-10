@@ -35,7 +35,7 @@ fi
 ### CLEAN HTML DIR, REMOVES OFFLINE SERVERS
 rm -R /var/www/html/*
 
-#### CREAING MAIN INDEX.HTML WITH LINK TO EVERY ONLINE SERVER #####################################
+#### CREAING INDEX.HTML WITH LINK TO EVERY ONLINE SERVER #############################################################################################################################################################
 sudo printf "<!DOCTYPE html>
 <html>
 <head>
@@ -47,10 +47,18 @@ sudo printf "<!DOCTYPE html>
 
 for SERVER in $SERVERS
  do
-  sudo printf "        <hr style=\"width:100\%;text-align:left;margin-left:0\">
-        <h3> > <a href=\"/$SERVER.html\">$SERVER</a> </h3>\n
-        <p> <img src=\"/$SERVER/$SERVER-Player-1h.png\" alt=\"Player-1h-PNG-GEN-FAILED\"> <img src=\"/$SERVER/$SERVER-TPS-1h.png\" alt=\"TPS-1h PNG GERN FAILED\"> <img src=\"/$SERVER/$SERVER-RAM-1h.png\" alt=\"RAM-1h PNG GEN FAILED\">  </br>
-" >> /var/www/html/index.html
+  if [ -f /home/$MCUSER/$SERVER/scripts/stats/$SERVER-Stats.rrd ]
+   then
+    sudo printf "        <hr style=\"width:100\%;text-align:left;margin-left:0\">
+         <h3> > <a href=\"/$SERVER.html\">$SERVER</a> </h3>\n
+         <p> <img src=\"/$SERVER/$SERVER-Player-1h.png\" alt=\"Player-1h-PNG-GEN-FAILED\"> <img src=\"/$SERVER/$SERVER-TPS-1h.png\" alt=\"TPS-1h PNG GERN FAILED\"> <img src=\"/$SERVER/$SERVER-RAM-1h.png\" alt=\"RAM-1h PNG GEN FAILED\">  </br>
+    " >> /var/www/html/index.html
+   else
+    sudo printf "        <hr style=\"width:100\%;text-align:left;margin-left:0\">
+         <h3> > <a href=\"/$SERVER.html\">$SERVER</a> </h3>\n
+         <p> ROUND ROBIN DATA BASE MISSING (can be installed with ~/$SERVER/scripts/rrd-create.sh) </p>
+    " >> /var/www/html/index.html
+  fi
 done
 
 sudo printf "</body>
@@ -58,20 +66,16 @@ sudo printf "</body>
 
 
 
-
 #### CREATING DIR FOR EACH SERVER AND ADDING SERVER.HTML ################################################################################################################################################
 for SERVER in $SERVERS
  do
-
-mkdir -p /var/www/html/$SERVER
-
-sudo printf " <!DOCTYPE html>
+  mkdir -p /var/www/html/$SERVER
+  sudo printf " <!DOCTYPE html>
 <html>
 <head>
         <title> $SERVER - Statistics </title>
 </head>
-<body>
-        <h2> $SERVER </h2>
+<body>          <h2> > <a href=\"/\" > $SERVER  </h2>
         <hr style=\"width:100\%;text-align:left;margin-left:0\">
         <p> <img src=\"/$SERVER/$SERVER-Player-1d.png\" alt=\"Player-1h-PNG-GERN-FAILED\"> <img src=\"/$SERVER/$SERVER-Player-1w.png\" alt=\"Player-1w PNG GERN FAILED\"> <img src=\"/$SERVER/$SERVER-Player-1m.png\" alt=\"Player-1m PNG GERN FAILED\">  </br>
         <hr style=\"width:100\%;text-align:left;margin-left:0\">
@@ -81,11 +85,8 @@ sudo printf " <!DOCTYPE html>
 </body>
 </html>
 " > /var/www/html/${SERVER}.html
-
-
-printf "[ DONE ] $SERVER $SERVER.html \n"
+  printf "[ DONE ] $SERVER $SERVER.html \n"
 done
-
 
 #### UPDATEING GRAPHS
 sudo /home/$MCUSER/$SERVER/scripts/copygraphshtml.sh
