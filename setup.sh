@@ -7,9 +7,9 @@
 #################################################################
 
 #### STATIC VARIABELS AND DIRECTORIES ###################################
-SCRIPTS="0_3_0-scripts"      		     # SCRIPTS-FOLDER-IN-DEV    #
+#SCRIPTS="0_3_0-scripts"      		     # SCRIPTS-FOLDER-IN-DEV    #
 #SCRIPTS="MinecraftServerScripts"            # SCRIPTS-FOLDER-GIT-CLONE #
-#SCRIPTS="MinecraftServerScripts-0_3_0"       # SCRIPTS-FOLDER-GIT-ZIP   #
+SCRIPTS="MinecraftServerScripts-0_3_0"       # SCRIPTS-FOLDER-GIT-ZIP   #
 SPACER_1="="								#
 MCUSER=$(pwd | cut -d '/' -f 3)						#
 #########################################################################
