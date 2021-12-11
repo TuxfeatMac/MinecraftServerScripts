@@ -179,13 +179,10 @@ if [ "$SERVERTYPE" == "vanilla" ]                                               
  then										#
   if [ "$VERSION" == "" ]
    then
-    read -p "[  IN  ] [ 1.18 ] Version? : " VERSION						#
+    printf "[ INFO ] fetching vanilla versions...\n"				#
+    LATESTRELEASE=$(~/$SCRIPTS/vanilla/optional/getlatestversion.sh)		#
+    read -p "[  IN  ] [ "$LATESTRELEASE" ] Version? : " VERSION			#
   fi
-
-  printf "[ INFO ] fetching vanilla versions...\n"				#
-  LATESTRELEASE=$(~/$SCRIPTS/vanilla/optional/getlatestversion.sh)		#
-  read -p "[  IN  ] [ "$LATESTRELEASE" ] Version? : " VERSION			#
-
 
   case "$VERSION" in                                                            #
    "")                                                                       	#
@@ -211,12 +208,12 @@ if [ "$SERVERTYPE" == "paper" ]									#    add the other server versions
  then
   if [ "$VERSION" == "" ]
    then
-    read -p "[  IN  ] [ 1.18 ] Version? : " VERSION						#
+    read -p "[  IN  ] [ 1.18.1 ] Version? : " VERSION						#   auto get latest version like vanilla !
   fi
 
    case "$VERSION" in										#
    "")												#
-    VERSION=${VERSION:-1.18}									#
+    VERSION=${VERSION:-1.18.1}									#
     printf "[$GREEN  OK  $NORMAL] using default => $VERSION\n";;				#
    1.18)                                                                                        #
     VERSION="1.18"                                                                              #
