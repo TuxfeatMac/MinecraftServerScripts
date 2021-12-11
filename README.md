@@ -49,14 +49,18 @@ The applayupdate.sh will delete all plugins located in ~/"SERVER"/plugins/*.jar 
 After deletion the whole pluginset in ~/"SERVER"/scripts/update/plugins/new + ~/"SERVER/scripts/update/plugins/man" wil be copied over to ~/"SERVER/plugins/"
 
 
-Example crontab entrys to automate everything
+
+Example crontab entrys to automate everything for 2 servers "PaperTest" "VanillaTest"
 #### MineCraft Server Scripts
 ## start servers at rebbot
-@reboot minecraft /home/minecraft/Paper/start.sh -b
-## update rrd's for running servers and generate graphs and copy to html
-*/1 * * * * minecraft /home/minecraft/Paper/scripts/serverstats.sh
-*/1 * * * * minecraft /home/minecraft/Paper/scripts/rrd-graph-all.sh
-*/1 * * * * root /home/minecraft/Paper/scripts/copygraphshtml.sh
+@reboot minecraft /home/minecraft/PaperTest/start.sh -b
+@reboot minecraft /home/minecraft/VanillaTest/start.sh -b
+#
+## update rrd's for all running / online servers and generate graphs and copy to html
+*/1 * * * * minecraft /home/minecraft/PaperTest/scripts/serverstats.sh 2&>1 /dev/null
+*/1 * * * * minecraft /home/minecraft/PaperTest/scripts/rrd-graph-all.sh 2&>1 /dev/null
+*/1 * * * * root /home/minecraft/PaperTest/scripts/copygraphshtml.sh 2&>1 /dev/null
+#
 ## check for vanished / new servers and update index.html
-*/5 * * * * root /home/minecraft/Paper/scripts/htmlupdate.sh
+*/5 * * * * root /home/minecraft/Paper/scripts/htmlupdate.sh 2&>1 /dev/null
 #
