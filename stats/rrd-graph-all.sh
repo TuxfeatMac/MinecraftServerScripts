@@ -6,36 +6,39 @@
 # Purpose:      generate graphs from rrd for all online servers #
 #################################################################
 
+#### STATIC VARS ####
 MCUSER=""
-
-SERVERS=$(screen -list | cut -d '.' -f 2 | cut -f 1 | cut -d ':' -f 2 | xargs)
-
 TIMES="1h 1d 1w 1m 1y"
-
 SPACER1="==========================================\n"
 
+### GENERATE GRAPHS FOR ALL RUNNING SERVERS
+SERVERS=$(screen -list | cut -d '.' -f 2 | cut -f 1 | cut -d ':' -f 2 | xargs)
 for SERVER in $SERVERS
 do
  for TIME in $TIMES
  do
-  HOMEDIR="/home/$MCUSER/"  # get through pwd ?
+  #### GET ACCORDING SERVER PATHS ####
+  HOMEDIR="/home/$MCUSER/"
   PICDIR="$HOMEDIR$SERVER/scripts/stats/"
   PICNAME="$PICDIR$SERVER"
   RRDDIR="$HOMEDIR$SERVER/scripts/stats/"
   RRDDATA="$RRDDIR$SERVER"
   RRD="$RRDDATA-Stats.rrd"
 
+ #### RRD GENERATE GRAPHS ###
  printf "$SPACER1"
   printf "[ INFO ] Genrating $TIME Graphs for $SERVER\n"
   if [ -f $RRD ]
    then
     rrdtool graph $PICNAME-TPS-$TIME.png --start now-$TIME --end now \
+    --upper-limit 22 --lower-limit 0 \
+    HRULE:20#1f1f1f \
     DEF:tps=$RRD:tps:AVERAGE \
-    AREA:tps#FF0000:"TPS" > /dev/null
+    AREA:tps#008000:"TPS" > /dev/null
 
     rrdtool graph $PICNAME-Player-$TIME.png --start now-$TIME --end now \
-    DEF:player=$RRD:player:AVERAGE \
-    AREA:player#AA0000:"Player" > /dev/null
+    DEF:player=$RRD:player:MAX \
+    AREA:player#000880:"Player" > /dev/null
 
     rrdtool graph $PICNAME-RAM-$TIME.png --start now-$TIME --end now \
     DEF:usedmem=$RRD:usedmem:AVERAGE \

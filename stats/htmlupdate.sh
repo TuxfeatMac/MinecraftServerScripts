@@ -36,7 +36,7 @@ fi
 rm -R /var/www/html/*
 
 #### CREAING INDEX.HTML WITH LINK TO EVERY ONLINE SERVER #############################################################################################################################################################
-sudo printf "<!DOCTYPE html>
+sudo -u www-data printf "<!DOCTYPE html>
 <html>
 <head>
         <title> Server Statistics </title>
@@ -49,19 +49,19 @@ for SERVER in $SERVERS
  do
   if [ -f /home/$MCUSER/$SERVER/scripts/stats/$SERVER-Stats.rrd ]
    then
-    sudo printf "        <hr style=\"width:100\%;text-align:left;margin-left:0\">
-         <h3> > <a href=\"/$SERVER.html\">$SERVER</a> </h3>\n
-         <p> <img src=\"/$SERVER/$SERVER-Player-1h.png\" alt=\"Player-1h-PNG-GEN-FAILED\"> <img src=\"/$SERVER/$SERVER-TPS-1h.png\" alt=\"TPS-1h PNG GERN FAILED\"> <img src=\"/$SERVER/$SERVER-RAM-1h.png\" alt=\"RAM-1h PNG GEN FAILED\">  </br>
-    " >> /var/www/html/index.html
+    sudo -u www-data printf  "        <hr style=\"width:100\%;text-align:left;margin-left:0\">
+        <h3> > <a href=\"/$SERVER.html\">$SERVER</a> </h3>\n
+        <p> <img src=\"/$SERVER/$SERVER-Player-1h.png\" alt=\"Player-1h-PNG-GEN-FAILED\"> <img src=\"/$SERVER/$SERVER-TPS-1h.png\" alt=\"TPS-1h PNG GERN FAILED\"> <img src=\"/$SERVER/$SERVER-RAM-1h.png\" alt=\"RAM-1h PNG GEN FAILED\">  </br>
+" >> /var/www/html/index.html
    else
-    sudo printf "        <hr style=\"width:100\%;text-align:left;margin-left:0\">
+    sudo -u www-data printf "        <hr style=\"width:100\%;text-align:left;margin-left:0\">
          <h3> > <a href=\"/$SERVER.html\">$SERVER</a> </h3>\n
          <p> ROUND ROBIN DATA BASE MISSING (can be installed with ~/$SERVER/scripts/rrd-create.sh) </p>
     " >> /var/www/html/index.html
   fi
 done
 
-sudo printf "</body>
+sudo -u www-data printf "</body>
 </html>" >> /var/www/html/index.html
 
 
@@ -69,8 +69,8 @@ sudo printf "</body>
 #### CREATING DIR FOR EACH SERVER AND ADDING SERVER.HTML ################################################################################################################################################
 for SERVER in $SERVERS
  do
-  mkdir -p /var/www/html/$SERVER
-  sudo printf " <!DOCTYPE html>
+  sudo -u www-data mkdir -p /var/www/html/$SERVER
+  sudo -u www-data printf " <!DOCTYPE html>
 <html>
 <head>
         <title> $SERVER - Statistics </title>
@@ -89,7 +89,7 @@ for SERVER in $SERVERS
 done
 
 #### UPDATEING GRAPHS
-sudo /home/$MCUSER/$SERVER/scripts/copygraphshtml.sh
+/home/$MCUSER/$SERVER/scripts/copygraphshtml.sh
 
 
 

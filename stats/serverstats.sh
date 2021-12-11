@@ -114,7 +114,7 @@ for (( SERVERNR=1; SERVERNR<=$SERVERCOUNT; SERVERNR++ ))
 #        PORT=$(grep server-port ~/$SERVER/server.properties | cut -d '=' -f 2)
       fi
     fi
-    # FETCH DATA FROM JSON'S 
+    # FETCH DATA FROM JSON'S
     if [ -f ~/$SERVER/usercache.json ] ## Filters Proxy
      then
       USERCOUNT=$(jq length ~/$SERVER/usercache.json)
@@ -175,8 +175,6 @@ for (( SERVERNR=1; SERVERNR<=$SERVERCOUNT; SERVERNR++ ))
 #    done
 
 #### RRD UPDATE DATABASE HAPPENS LAST ########################################################################
-    #printf "RRD-DATENBANK-UPDATE - "
-    #printf "$TPS:$CALCONLINE:$USEDMEM\n"
     if [ -f ~/$SERVER/scripts/stats/$SERVER-Stats.rrd ]
      then
       rrdtool update ~/$SERVER/scripts/stats/$SERVER-Stats.rrd N:$TPS:$CALCONLINE:$USEDMEM	#
@@ -188,13 +186,14 @@ done
 
 printf " \n"
 printf " \n"
+
 #### PRINT DYNAMIC FOOTER #######################################
-#################################################################
 for (( WIDTH=1; WIDTH<=$WIDTHMAX; WIDTH++ ))			#
  do								#
   printf "$SPACER_1"						#
 done								#
 #################################################################
+
 #printf "$SPACER_2"
 printf " \n"
 
