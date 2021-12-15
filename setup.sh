@@ -195,50 +195,38 @@ if [ "$SERVERTYPE" == "vanilla" ]                                               
       VERSION="$VERSION"							#
      else									#
       printf "[ EXIT ] $version is not a valid version \n"			#
+      exit									#
     fi										#
   esac                                                                          #
-  rm versions.json								#
 fi                                                                              #
 #################################################################################
 
-#### PAPER #### GET AND SET THE SERVERVERSION ###################################################
-if [ "$SERVERTYPE" == "paper" ]									#
- then												#
-  if [ "$VERSION" == "" ]									#
-   then												#
-    read -p "[  IN  ] [ 1.18.1 ] Version? : " VERSION						#   auto get latest versions api like vanilla !
-  fi												#
-   case "$VERSION" in										#
-   "")												#
-    VERSION=${VERSION:-1.18.1}									#
-    printf "[$GREEN  OK  $NORMAL] using default => $VERSION\n";;				#
-   1.18.1)                                                                                      #
-    VERSION="1.18.1"                                                                              #
-    printf "[$GREEN  OK  $NORMAL] using => $VERSION\n";;					#
-   1.17.1)											#
-    VERSION="1.17.1"										#
-    printf "[$GREEN  OK  $NORMAL] using => $VERSION\n";;					#
-   1.16.5)											#
-    VERSION="1.16.5"										#
-    printf "[$GREEN  OK  $NORMAL] using => $VERSION\n";;					#
-   1.12.2)											#	add more versions?
-    VERSION="1.12.2"										#
-    UNTESTED="y"										#
-    tput setaf 3 && dynline1 && tput sgr0							#
-    printf "[$YELLOW WARN $NORMAL] untested version... trying to setup $VERSION\n"		#
-    tput setaf 3 && dynline1 && tput sgr0;;							#
-   1.8.8)											#	add more versions?
-    VERSION="1.8.8"										#
-    UNTESTED="y"										#
-    tput setaf 3 && dynline1 && tput sgr0							#
-    printf "[$YELLOW WARN $NORMAL] untested version... trying to setup $VERSION\n"		#
-    tput setaf 3 && dynline1 && tput sgr0;;							#
-   *)												#
-    printf "[$YELLOW SKIP $NORMAL] invalid input abbort...\n"					#
-    exit;;											#
-  esac												#
-fi												#
-#################################################################################################
+#### PAPER #### GET AND SET THE SERVERVERSION ###################################
+if [ "$SERVERTYPE" == "paper" ]                                               	#
+ then										#
+  if [ "$VERSION" == "" ]							#
+   then										#
+    printf "[ INFO ] fetching paper versions...\n"				#
+    LATESTRELEASE=$(~/$SCRIPTS/paper/optional/getlatestversion.sh)		#
+    read -p "[  IN  ] [ "$LATESTRELEASE" ] Version? : " VERSION			#
+  fi										#
+  case "$VERSION" in                                                            #
+   "")                                                                       	#
+    VERSION=${VERSION:-$LATESTRELEASE}                                          #
+    printf "[$GREEN   OK   $NORMAL] using official latest => $VERSION\n";;	#
+   *)                                                         	                #
+    printf "[$YELLOW  OK  $NORMAL] trying version => $VERSION, checking...\n"	#
+    VALID=$(~/$SCRIPTS/paper/optional/versionexits.sh $VERSION)			#
+    if [ "$VALID" != "" ]							#
+     then									#
+      VERSION="$VERSION"							#
+     else									#
+      printf "[ EXIT ] $VERSION is not a valid version \n"			#
+      exit									#
+    fi										#
+  esac                                                                          #
+fi                                                                              #
+#################################################################################
 
 #### SNAPSHOT SERVER ############################################
 #if [ "$SERVERTYPE" == "snapshot" ]				#
