@@ -113,4 +113,8 @@ if [ "$UPDATE" == "" ]									#
 fi											#
 #########################################################################################
 
+### Vanilla/snap version number script upgrade after change !!!! ###
+
+### Paper/velocity build version script upgrade after change ? ###
+
 #### EOF ####
