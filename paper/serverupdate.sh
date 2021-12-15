@@ -65,7 +65,7 @@ fi                                                     				#
 
 #### GET LATEST PAPER SERVER BUILD NUMBER #######################################################################################
 LATESTBUILD=$(curl -s https://papermc.io/api/v2/projects/paper/versions/$VERSION/ | jq '.[]' | tail -n 2 | head -n 1 | xargs)	#
-BUILD=$(ls ~/$SERVER/paper-* | cut -d '-' -f 3 | cut -d '.' -f 1)								#
+BUILD=$(ls ~/$SERVER/paper-* 2>/dev/null | cut -d '-' -f 3 | cut -d '.' -f 1)								#
 printf "[$GREEN DONE $NORMAL] fetched latest build from PaperMC\n"								#
 #################################################################################################################################
 
