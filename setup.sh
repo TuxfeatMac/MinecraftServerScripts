@@ -213,7 +213,7 @@ if [ "$SERVERTYPE" == "paper" ]									#
     VERSION=${VERSION:-1.18.1}									#
     printf "[$GREEN  OK  $NORMAL] using default => $VERSION\n";;				#
    1.18.1)                                                                                      #
-    VERSION="1.18"                                                                              #
+    VERSION="1.18.1"                                                                              #
     printf "[$GREEN  OK  $NORMAL] using => $VERSION\n";;					#
    1.17.1)											#
     VERSION="1.17.1"										#

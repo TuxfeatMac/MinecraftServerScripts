@@ -76,14 +76,14 @@ if [ "$VERSION" != "$LATEST" ] || [ ! -f ~/$SERVER/*.jar ]			#
     then                                                   			#
      printf "[ INFO ] $SERVER is running... also informing users...\n"		#
      screen -S $SERVER -X stuff 'say [Info] downloading Server updates...\n'	#
-   fi                                                     				#
-   ./serverdownloader.sh $VERSION
-   mv vanilla-*.jar $USDIR
-
-   if [ "$RUN" == "$SERVER" ]                                              #
-    then                                                                   #
-     screen -S $SERVER -X stuff 'say [Info] Download erfolgreich!\n' 	#
-   fi                                                                      #
+   fi                                                     			#
+   ./serverdownloader.sh $VERSION						#
+   mv vanilla-*.jar $USDIR							#
+										#
+   if [ "$RUN" == "$SERVER" ]                                              	#
+    then                                                                   	#
+     screen -S $SERVER -X stuff 'say [Info] Download erfolgreich!\n'		#
+   fi                                                                      	#
 
  else
   printf "[$GREEN DONE $NORMAL] Ver.: $VERSION is the latest version.\n"

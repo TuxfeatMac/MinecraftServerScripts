@@ -1,4 +1,4 @@
-#!/bin/bash
+# !/bin/bash
 #################################################################
 # Name:         serverdownloader.sh   Version:      0.3.0       #
 # Created:      21.02.2021            Modified:     05.12.2021  #
@@ -8,7 +8,6 @@
 #################################################################
 
 #### SET SOME COLOURS ####
-##########################
 NORMAL=$(tput sgr0)      #
 RED=$(tput setaf 1)      #
 GREEN=$(tput setaf 2)    #
@@ -36,7 +35,7 @@ if [ "$1" == "" ]							#
 fi									#
 #########################################################################
 
-#### EXTRACT THE CORRESPONDING VERSION.JSON #############################################
+#### EXTRACT THE CORRESPONDING VERSION URL ##############################################
 VERSIONURL=$(jq -r ".versions | .[] | select(.id==\"$VERSION\") | .url" versions.json)	#
 if [ "$VERSIONURL" == "" ]								#
  then											#
