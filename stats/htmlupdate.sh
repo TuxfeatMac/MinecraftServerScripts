@@ -40,6 +40,7 @@ sudo -u www-data printf "<!DOCTYPE html>
 <html>
 <head>
         <title> Server Statistics </title>
+	<meta http-equiv="refresh" content="90">
 </head>
 <body>
         <h2>Minecraft Server Statistics Overview</h2>
