@@ -1,15 +1,15 @@
 #!/bin/bash
 #################################################################
-# Name:         serverupdate.sh       Version:      0.2.9       #
-# Created:      02.12.2020            Modified:     10.12.2020  #
+# Name:         serverupdate.sh       Version:      0.3.0       #
+# Created:      02.12.2020            Modified:     15.12.2020  #
 # Author:       Joachim Traeuble                                #
 # Purpose:      fetching the latest paper server 	        #
 #################################################################
 
 #### ADJUST SERVER VARIABELS HERE #######
 #########################################
-SERVER=""                        	#
-VERSION=""				#
+SERVER=""			#
+VERSION=""			#
 #########################################
 
 #### SET SOME COLOURS ####
@@ -63,20 +63,32 @@ if [ "$RUN" == "$SERVER" ]                              			#
 fi                                                     				#
 #################################################################################
 
-#### GETTING PAPER SERVER UPDATES READY TO INSTALL ######################################################
-cd $USDIR												#
-rm *.jar > /dev/null 2>&1										#
-LATESTBUILD=$(curl -s https://papermc.io/api/v2/projects/paper/versions/$VERSION/ | jq '.[]' | tail -n 2 | head -n 1 | xargs) ## not perfect but works, better jq aerguments avaible allso check first  like on vanilla ? or even move to seperate "downloader ?"
-printf "[ INFO ] downloading latest PaperServer $VERSION ...\n"						#
-wget https://papermc.io/api/v2/projects/paper/versions/$VERSION/builds/$LATESTBUILD/downloads/paper-$VERSION-$LATESTBUILD.jar -q --show-progress
-printf "[$GREEN DONE $NORMAL] update ready apply with ./applyupdate.sh\n"				#
-#########################################################################################################
+#### GET LATEST PAPER SERVER BUILD NUMBER #######################################################################################
+LATESTBUILD=$(curl -s https://papermc.io/api/v2/projects/paper/versions/$VERSION/ | jq '.[]' | tail -n 2 | head -n 1 | xargs)	#
+BUILD=$(ls ~/$SERVER/paper-* | cut -d '-' -f 3 | cut -d '.' -f 1)								#
+printf "[$GREEN DONE $NORMAL] fetched latest build from PaperMC\n"								#
+#################################################################################################################################
 
-#### CHECK IF SERVER IS RUNNING IF SO INFORM USERS ON SERVER ############
-if [ "$RUN" == "$SERVER" ]                                              #
- then                                                                   #
-  screen -S $SERVER -X stuff 'say [Info] Download erfolgreich!\n' 	#
-fi                                                                      #
-#########################################################################
-
-#### EOF ####
+#### DOWNLOAD SERVER ONLY IF NONE EXISTENT OR NEWER BUILD IS AVAIABLE ###########
+if [ "$LATESTBUILD" != "$BUILD" ] || [ ! -f ~/$SERVER/*.jar ]                   #
+ then                                                                           #
+   if [ "$RUN" == "$SERVER" ]                                                   #
+    then                                                                        #
+     printf "[ INFO ] $SERVER is running... also informing users...\n"          #
+     screen -S $SERVER -X stuff 'say [Info] downloading Server updates...\n'    #
+   fi                                                                           #
+   ./paperdownloader.sh $VERSION                                                #
+   mv paper-*.jar $USDIR                                                        # update version numbers ? applay ?
+                                                                                #
+   if [ "$RUN" == "$SERVER" ]                                                   #
+    then                                                                        #
+     screen -S $SERVER -X stuff 'say [Info] Download erfolgreich!\n'            #
+   fi                                                                           #
+ else										#
+  printf "[$GREEN DONE $NORMAL] build $BUILD is the latest build number.\n"	#
+  if [ "$RUN" == "$SERVER" ]                                                    #
+   then                                                                         #
+   screen -S $SERVER -X stuff 'say [Info] Version: $VERSION-$BUILD ist aktuell.\n'     #
+  fi                                                                            #
+fi										#
+#################################################################################
