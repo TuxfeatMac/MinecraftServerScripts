@@ -1,15 +1,15 @@
 #!/bin/bash
 #################################################################
 # Name:         setup.sh              Version:      0.3.0       #
-# Created:      06.12.2020            Modified:     07.12.2021  #
+# Created:      06.12.2020            Modified:     15.12.2021  #
 # Author:       Joachim Traeuble                                #
 # Purpose:      setup a new MineCraftServer, with ease          #
 #################################################################
 
 #### STATIC VARIABELS AND DIRECTORIES ###################################
-#SCRIPTS="0_3_0-scripts"      		     # SCRIPTS-FOLDER-IN-DEV    #
+SCRIPTS="0_3_0-scripts"      		     # SCRIPTS-FOLDER-IN-DEV    #
 #SCRIPTS="MinecraftServerScripts"            # SCRIPTS-FOLDER-GIT-CLONE #
-SCRIPTS="MinecraftServerScripts-0_3_0"       # SCRIPTS-FOLDER-GIT-ZIP   #
+#SCRIPTS="MinecraftServerScripts-0_3_0"       # SCRIPTS-FOLDER-GIT-ZIP   #
 SPACER_1="="								#
 MCUSER=$(pwd | cut -d '/' -f 3)						#
 #########################################################################
@@ -60,46 +60,48 @@ if [ "$SERVER" == "" ]						#
 fi								#
 #################################################################
 
-#### CHECK IF IT IS A NEW SERVER / SERVER DIR OR JUST REPLACE THE OLD SCRIPTS ###################################
-if [ -d ~/$SERVER ]												#
- then														#
-  tput setaf 3 && dynline1 && tput sgr0										#
-  printf "[$YELLOW WARN $NORMAL] => $RED$SERVER$NORMAL already exits!\n"					#
-  read -t 15 -p "[$YELLOW  IN  $NORMAL] [ y / n ]$RED override$NORMAL /$GREEN update$NORMAL existing scripts? : " INPUT		#
-  if [ "$INPUT" == "y" ]                                                       					#
-   then                                                                         				#
+#### CHECK IF IT IS A NEW SERVER / SERVER DIR OR JUST REPLACE THE OLD SCRIPTS ###########################################
+if [ -d ~/$SERVER ]													#
+ then															#
+  tput setaf 3 && dynline1 && tput sgr0											#
+  printf "[$YELLOW WARN $NORMAL] => $RED$SERVER$NORMAL already exits!\n"						#
+  read -t 15 -p "[$YELLOW  IN  $NORMAL] [ y / n ]$RED override$NORMAL /$GREEN update$NORMAL existing scripts? : " INPUT	#
+  if [ "$INPUT" == "y" ]                                                       						#
+   then                                                                         					#
     OVERRIDE="y"
-    VERSION=$(grep ^VERSION= /home/minecraft/$SERVER/scripts/start.sh | cut -d\= -f2 | tr -d '"# ' | xargs )
-    RAM=$(grep ^RAM= /home/minecraft/$SERVER/scripts/start.sh | cut -d\= -f2 | tr -d '"# ' | xargs)
-    PORT=$(grep ^server-port= /home/minecraft/$SERVER/server.properties | cut -d '=' -f2)
+    VERSION=$(grep ^VERSION= ~/$SERVER/scripts/start.sh | cut -d\= -f2 | tr -d '"# ' | xargs )
+    RAM=$(grep ^RAM= ~/$SERVER/scripts/start.sh | cut -d\= -f2 | tr -d '"# ' | xargs)
+    PORT=$(grep ^server-port= ~/$SERVER/server.properties | cut -d '=' -f2)
     #### DETERMINE SERVERTYPE VIA SERVER.YMLS ####
     PAPERYML=~/$SERVER/paper.yml
     SPIGOTYML=~/$SERVER/spigot.yml
     BUKKITYML=~/$SERVER/bukkit.yml
     SERVERPROPS=~/$SERVER/server.properties
     for FILE in $SERVERPROPS $BUKKITYML $SPIGOTYML $PAPERYML                        # <= Order is important for SERVERTYPE!
-     do                                                                             #
+     do                                                                             # vanilla = server!
       if [ -f $FILE ]                                                               #
        then                                                                         #
-        SERVERTYPE=$(ls $FILE | cut -d\/ -f5 | cut -d\. -f1)                        #
+        SERVERTYPE=$(ls $FILE | cut -d\/ -f5 | cut -d\. -f1)
+	if [ "$SERVERTYPE" == "server" ]
+         then
+          SERVERTYPE="vanilla"
+        fi                        #
       fi
     done
-    tput setaf 3 && dynline1 && tput sgr0										#
+    tput setaf 3 && dynline1 && tput sgr0									#
    else                                                                         				#
-    tput setaf 3 && dynline1 && tput sgr0										#
+    tput setaf 3 && dynline1 && tput sgr0									#
     printf "[$YELLOW SKIP $NORMAL] abbort...\n"									#
     exit													#
-  fi														# automaticaly determine type ?
+  fi														#
 fi														#
 #################################################################################################################
 
 #### GET AND SET THE SERVERTYPE #################################################################################
-
-if [ "$SERVERTYPE" == "" ]
- then
+if [ "$SERVERTYPE" == "" ]											#
+ then														#
   read -p "[  IN  ] [ vanilla / paper ] ServerType ? : " SERVERTYPE						#
-fi
-
+fi														#
 #read -p "[  IN  ] [ vanilla / snapshot / paper / velocity / bukkit / spigot ] ServerType ? : " SERVERTYPE	# no support for: waterfall, bungeecord, ... proxy setup seperate script !/?
 case "$SERVERTYPE" in												#
  "")														#
@@ -128,11 +130,10 @@ esac														#
 #################################################################################################################
 
 #### GET AND SET JAVA SERVER RAM SIZE, FOR start.sh SCRIPT  #####
-if [ "$RAM" == "" ]
- then
+if [ "$RAM" == "" ]						#
+ then								#
   read -p "[  IN  ] [ 1024M ] Ram? : " RAM			#
-fi
-
+fi								#
 case "$RAM" in							#
  "")								#
   RAM=${RAM:-1024M}						#
@@ -151,11 +152,10 @@ esac								#
 #################################################################
 
 #### GET AND SET THE SERVER PORT FOR FIRSTRUN ###################
-if [ "$PORT" == "" ]
- then
+if [ "$PORT" == "" ]						#
+ then								#
   read -p "[  IN  ] [ 25565 ] Port? : " PORT			#
-fi
-
+fi								#
 case "$PORT" in                                                 #
  "")								#
   PORT=${PORT:-25565}                                           #
@@ -177,24 +177,22 @@ esac                                                            #
 #### VANILLA #### GET AND SET THE SERVERVERSION #################################
 if [ "$SERVERTYPE" == "vanilla" ]                                               #
  then										#
-  if [ "$VERSION" == "" ]
-   then
+  if [ "$VERSION" == "" ]							#
+   then										#
     printf "[ INFO ] fetching vanilla versions...\n"				#
     LATESTRELEASE=$(~/$SCRIPTS/vanilla/optional/getlatestversion.sh)		#
     read -p "[  IN  ] [ "$LATESTRELEASE" ] Version? : " VERSION			#
-  fi
-
+  fi										#
   case "$VERSION" in                                                            #
    "")                                                                       	#
     VERSION=${VERSION:-$LATESTRELEASE}                                          #
     printf "[$GREEN   OK   $NORMAL] using official latest => $VERSION\n";;	#
    *)                                                         	                #
-    printf "[$YELLOW  OK  $NORMAL] trying version => $VERSION , checking...\n"	#
-    EXISTS=$(~/$SCRIPTS/vanilla/optional/versionexits.sh $VERSION)		#
-    if [ "$EXISTS" == "" ]							#
+    printf "[$YELLOW  OK  $NORMAL] trying version => $VERSION, checking...\n"	#
+    VALID=$(~/$SCRIPTS/vanilla/optional/versionexits.sh $VERSION)		#
+    if [ "$VALID" != "" ]							#
      then									#
       VERSION="$VERSION"							#
-      UNCHECKED="y"								# UNCHECKED flagg no function for now
      else									#
       printf "[ EXIT ] $version is not a valid version \n"			#
     fi										#
@@ -204,18 +202,17 @@ fi                                                                              
 #################################################################################
 
 #### PAPER #### GET AND SET THE SERVERVERSION ###################################################
-if [ "$SERVERTYPE" == "paper" ]									#    add the other server versions
- then
-  if [ "$VERSION" == "" ]
-   then
-    read -p "[  IN  ] [ 1.18.1 ] Version? : " VERSION						#   auto get latest version like vanilla !
-  fi
-
+if [ "$SERVERTYPE" == "paper" ]									#
+ then												#
+  if [ "$VERSION" == "" ]									#
+   then												#
+    read -p "[  IN  ] [ 1.18.1 ] Version? : " VERSION						#   auto get latest versions api like vanilla !
+  fi												#
    case "$VERSION" in										#
    "")												#
     VERSION=${VERSION:-1.18.1}									#
     printf "[$GREEN  OK  $NORMAL] using default => $VERSION\n";;				#
-   1.18)                                                                                        #
+   1.18.1)                                                                                      #
     VERSION="1.18"                                                                              #
     printf "[$GREEN  OK  $NORMAL] using => $VERSION\n";;					#
    1.17.1)											#
@@ -227,15 +224,15 @@ if [ "$SERVERTYPE" == "paper" ]									#    add the other server versions
    1.12.2)											#	add more versions?
     VERSION="1.12.2"										#
     UNTESTED="y"										#
-    tput setaf 3 && dynline1 && tput sgr0										#
+    tput setaf 3 && dynline1 && tput sgr0							#
     printf "[$YELLOW WARN $NORMAL] untested version... trying to setup $VERSION\n"		#
-    tput setaf 3 && dynline1 && tput sgr0;;										#
+    tput setaf 3 && dynline1 && tput sgr0;;							#
    1.8.8)											#	add more versions?
     VERSION="1.8.8"										#
     UNTESTED="y"										#
-    tput setaf 3 && dynline1 && tput sgr0										#
+    tput setaf 3 && dynline1 && tput sgr0							#
     printf "[$YELLOW WARN $NORMAL] untested version... trying to setup $VERSION\n"		#
-    tput setaf 3 && dynline1 && tput sgr0;;										#
+    tput setaf 3 && dynline1 && tput sgr0;;							#
    *)												#
     printf "[$YELLOW SKIP $NORMAL] invalid input abbort...\n"					#
     exit;;											#
@@ -329,10 +326,10 @@ if [ "$UNTESTED" == "y" ]								#
   #######################################################################################
   ./applyupdate.sh									#
   #######################################################################################
-  tput setaf 2 && dynline1 && tput sgr0										#
+  tput setaf 2 && dynline1 && tput sgr0							#
   printf "[$RED WARN $NORMAL] use this setup at your own risk!\n"			#
   printf "[$RED WARN $NORMAL] some scripts may be not compatible!\n"			#
-  tput setaf 2 && dynline1 && tput sgr0										#
+  tput setaf 2 && dynline1 && tput sgr0							#
   printf "[$GREEN DONE $NORMAL] setup done...\n"					#
   exit											#
 fi											#
@@ -341,7 +338,7 @@ fi											#
 #### FIRSTRUN SERVER SETUP ##############################################
 if [ "$OVERRIDE" == "" ]						#
  then									#
-  dynline1
+  dynline1								#
   printf "[ INFO ] this is a new Server!\n"				#
   #######################################################################
   printf "[ INFO ] creating nessesary dirs...\n"			#
@@ -354,30 +351,30 @@ if [ "$OVERRIDE" == "" ]						#
   mkdir ~/$SERVER/scripts/update/plugins/temp				#
   printf "[$GREEN DONE $NORMAL] dirs created!\n"			#
   #######################################################################
-  dynline1
+  dynline1								#
   ./checkdependencies.sh						#
-  dynline1
+  dynline1								#
   printf "[ INFO ] accepting the EULA...\n"				#
   touch ~/$SERVER/eula.txt						#
   printf "eula=true" > ~/$SERVER/eula.txt				#
   printf "[$GREEN INFO $NORMAL] EULA accepted!\n"			#
   #######################################################################
-  dynline1
+  dynline1								#
   ./selectplugins.sh							#
   #######################################################################
-  dynline1
+  dynline1								#
   ./serverupdate.sh							#
   #######################################################################
-  dynline1
+  dynline1								#
   ./pluginupdate.sh							#
   #######################################################################
-  dynline1
+  dynline1								#
   ./applyupdate.sh							#
   #######################################################################
   touch ~/$SERVER/server.properties					#
   printf "server-port=$PORT" > ~/$SERVER/server.properties		#
-  printf "[$GREEN INFO $NORMAL] Server Port set to $PORT\n"		#  fixed 25500 for now
-  dynline1
+  printf "[$GREEN INFO $NORMAL] Server Port set to $PORT\n"		#
+  dynline1								#
   printf "[ INFO ] starting $SERVER for the first time...\n" 		#  stop server as soon as possible again
   printf "[ INFO ] this may take a while, please be patient...\n" 	#
   ./start.sh -b								#
@@ -394,19 +391,21 @@ if [ "$OVERRIDE" == "" ]						#
   done                                                                  #
   printf "\n[$GREEN DONE $NORMAL] $SERVER is down again!\n"		#
   #######################################################################
-  dynline1
+  dynline1								#
   printf "[ INFO ] configrue your Server Settings\n"	 		#  ask for settings ?
   ./settings.sh -h							#
   #######################################################################  implement settings modifing
-  dynline1
+  dynline1								#
   printf "[ INFO ] use ~/$SERVER/scripts/start.sh to start server now\n"	#
  else									#
- dynline1
+ dynline1								#
  #./selectplugins.sh							#
 fi									#
 #########################################################################  configure settings
 
-#### DISPLAY FINAL INFOS ################################################
-dynline1
-printf "[$GREEN DONE $NORMAL] setup complete!\n"			#
-#########################################################################
+#### DISPLAY FINAL MESSAGE  #############################
+dynline1						#
+printf "[$GREEN DONE $NORMAL] setup complete!\n"	#
+#########################################################
+
+#### EOF ####
