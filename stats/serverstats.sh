@@ -132,19 +132,19 @@ for (( SERVERNR=1; SERVERNR<=$SERVERCOUNT; SERVERNR++ ))
     OPS=$(jq length ~/$SERVER/ops.json)
       # FETCH ONLINE CONNECTIONS
 #    PORT=$(grep server-port ~/$SERVER/server.properties | cut -d '=' -f 2)
-    ONLINE=$(lsof -i TCP:$PORT -sTCP:ESTABLISHED | wc -l)
-    CALCONLINE=$(($ONLINE-1))
+    ONLINE=$(lsof -i -sTCP:ESTABLISHED | grep $PORT | wc -l)
+    CALCONLINE=$(($ONLINE))
 
     if [ "$CALCONLINE" -lt "0" ]
      then
       CALCONLINE="0"
     fi
     # IF MINECRAFT SERVER IS RUNNING ON SAME SERVER AS PROXY SERVER
-    PROXY=$(grep online-mode ~/$SERVER/server.properties | cut -d '=' -f 2)
-    if [ "$PROXY" == "false" ]
-     then
-      CALCONLINE=$(("$CALCONLINE"/2))
-    fi
+    #PROXY=$(grep online-mode ~/$SERVER/server.properties | cut -d '=' -f 2)
+    #if [ "$PROXY" == "false" ]
+    # then
+    #  CALCONLINE=$(("$CALCONLINE"/2))
+    #fi
 
 #### DISPLAY STATISTICS IN STYLE - UNCOLORED
 #    #printf "$ >> SERVER\n"
