@@ -100,7 +100,7 @@ fi														#
 #### GET AND SET THE SERVERTYPE #################################################################################
 if [ "$SERVERTYPE" == "" ]											#
  then														#
-  read -p "[  IN  ] [ vanilla / paper ] ServerType ? : " SERVERTYPE						#
+  read -p "[  IN  ] [ vanilla / snapshot / paper ] ServerType ? : " SERVERTYPE						#
 fi														#
 #read -p "[  IN  ] [ vanilla / snapshot / paper / velocity / bukkit / spigot ] ServerType ? : " SERVERTYPE	# no support for: waterfall, bungeecord, ... proxy setup seperate script !/?
 case "$SERVERTYPE" in												#
@@ -110,8 +110,7 @@ case "$SERVERTYPE" in												#
  vanilla)													#
   printf "[$GREEN  OK  $NORMAL] using => $SERVERTYPE\n";;							#
  snapshot)													#
-  printf "[$YELLOW SKIP $NORMAL] unsupported / in dev abbort...\n"						#
-  exit;;													#
+  printf "[$YELLOW SKIP $NORMAL] in dev trying...\n";;
  paper)														#
   printf "[$GREEN  OK  $NORMAL] using => $SERVERTYPE\n";;							#
  velocity)													#
@@ -197,6 +196,33 @@ if [ "$SERVERTYPE" == "vanilla" ]                                               
       printf "[ EXIT ] $version is not a valid version \n"			#
       exit									#
     fi										#
+  esac                                                                          #
+fi                                                                              #
+#################################################################################
+
+#### VANILLA SNAP #### GET AND SET THE SERVERVERSION ############################
+if [ "$SERVERTYPE" == "snapshot" ] 	                                        #
+ then                                                                           #
+  if [ "$VERSION" == "" ]                                                       #
+   then                                                                         #
+    printf "[ INFO ] fetching vanilla versions...\n"                            #
+    LATESTRELEASE=$(~/$SCRIPTS/snapshot/optional/getlatestversion.sh)           #
+    read -p "[  IN  ] [ "$LATESTRELEASE" ] Version? : " VERSION                 #
+  fi                                                                            #
+  case "$VERSION" in                                                            #
+   "")                                                                          #
+    VERSION=${VERSION:-$LATESTRELEASE}                                          #
+    printf "[$GREEN   OK   $NORMAL] using official latest => $VERSION\n";;      #
+   *)                                                                           #
+    printf "[$YELLOW  OK  $NORMAL] trying version => $VERSION, checking...\n"   #
+    VALID=$(~/$SCRIPTS/vanilla/snapshot/versionexits.sh $VERSION)               #
+    if [ "$VALID" != "" ]                                                       #
+     then                                                                       #
+      VERSION="$VERSION"                                                        #
+     else                                                                       #
+      printf "[ EXIT ] $version is not a valid version \n"                      #
+      exit                                                                      #
+    fi                                                                          #
   esac                                                                          #
 fi                                                                              #
 #################################################################################
