@@ -88,7 +88,7 @@ if [ "$LATESTBUILD" != "$BUILD" ] || [ ! -f ~/$SERVER/*.jar ]                   
   printf "[$GREEN DONE $NORMAL] build $BUILD is the latest build number.\n"	#
   if [ "$RUN" == "$SERVER" ]                                                    #
    then                                                                         #
-   screen -S $SERVER -X stuff 'say [Info] Version: $VERSION-$BUILD ist aktuell.\n'     #
+   screen -S $SERVER -X stuff "say [Info] Version: $VERSION-$LATESTBUILD ist aktuell.\n"     #
   fi                                                                            #
 fi										#
 #################################################################################
