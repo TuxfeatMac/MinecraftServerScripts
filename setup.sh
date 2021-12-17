@@ -69,6 +69,7 @@ if [ -d ~/$SERVER ]													#
   if [ "$INPUT" == "y" ]                                                       						#
    then                                                                         					#
     OVERRIDE="y"
+    #### GET OLD SERVER SETTINGS ####    # get selected plugins ? or warn ?
     VERSION=$(grep ^VERSION= ~/$SERVER/scripts/start.sh | cut -d\= -f2 | tr -d '"# ' | xargs )
     RAM=$(grep ^RAM= ~/$SERVER/scripts/start.sh | cut -d\= -f2 | tr -d '"# ' | xargs)
     PORT=$(grep ^server-port= ~/$SERVER/server.properties | cut -d '=' -f2)

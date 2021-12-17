@@ -77,7 +77,7 @@ if [ "$VERSION" != "$LATEST" ] || [ ! -f ~/$SERVER/*.jar ]			#
      printf "[ INFO ] $SERVER is running... also informing users...\n"		#
      screen -S $SERVER -X stuff 'say [Info] downloading Server updates...\n'	#
    fi                                                     			#
-   ./serverdownloader.sh $VERSION						#
+   ./snapdownloader.sh $VERSION						#
    mv vanilla-*.jar $USDIR							# update version numbers ? applay ?
 										#
    if [ "$RUN" == "$SERVER" ]                                              	#
