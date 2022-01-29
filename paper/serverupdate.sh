@@ -1,7 +1,7 @@
 #!/bin/bash
 #################################################################
 # Name:         serverupdate.sh       Version:      0.3.0       #
-# Created:      02.12.2020            Modified:     15.12.2020  #
+# Created:      02.12.2020            Modified:     23.12.2020  #
 # Author:       Joachim Traeuble                                #
 # Purpose:      fetching the latest paper server 	        #
 #################################################################
@@ -23,6 +23,13 @@ YELLOW=$(tput setaf 3)   #
 UDIR=~/$SERVER/scripts/update/			#
 USDIR=~/$SERVER/scripts/update/paper/		#
 #################################################
+
+#### SCRIPT OPTIONS #####
+if [ "$1" == "-i" ]     #
+ then                   #
+  INSTANT="true"        #
+fi                      #
+#########################
 
 #### CHECK SETUP ################################################
 for VAR in "$SERVER" "$VERSION"					#
@@ -59,13 +66,13 @@ RUN=$(screen -list | grep -o "$SERVER")                 			#
 if [ "$RUN" == "$SERVER" ]                              			#
  then                                                   			#
   printf "[ INFO ] $SERVER is running... also informing users...\n"		#
-  screen -S $SERVER -X stuff 'say [Info] downloading Server updates...\n'	#
+  screen -S $SERVER -X stuff 'say [Info] Update Check...\n'			#
 fi                                                     				#
 #################################################################################
 
 #### GET LATEST PAPER SERVER BUILD NUMBER #######################################################################################
 LATESTBUILD=$(curl -s https://papermc.io/api/v2/projects/paper/versions/$VERSION/ | jq '.[]' | tail -n 2 | head -n 1 | xargs)	#
-BUILD=$(ls ~/$SERVER/paper-* 2>/dev/null | cut -d '-' -f 3 | cut -d '.' -f 1)								#
+BUILD=$(ls ~/$SERVER/paper-* 2>/dev/null | cut -d '-' -f 3 | cut -d '.' -f 1)							#
 printf "[$GREEN DONE $NORMAL] fetched latest build from PaperMC\n"								#
 #################################################################################################################################
 
@@ -75,15 +82,22 @@ if [ "$LATESTBUILD" != "$BUILD" ] || [ ! -f ~/$SERVER/*.jar ]                   
    if [ "$RUN" == "$SERVER" ]                                                   #
     then                                                                        #
      printf "[ INFO ] $SERVER is running... also informing users...\n"          #
-     screen -S $SERVER -X stuff 'say [Info] downloading Server updates...\n'    #
+     screen -S $SERVER -X stuff 'say [Info] ... downloading Server Updates...\n'	#
    fi                                                                           #
    ./paperdownloader.sh $VERSION                                                #
-   mv paper-*.jar $USDIR                                                        # update version numbers ? applay ?
-                                                                                #
+   mv paper-*.jar $USDIR                                                        #
    if [ "$RUN" == "$SERVER" ]                                                   #
     then                                                                        #
      screen -S $SERVER -X stuff 'say [Info] Download erfolgreich!\n'            #
    fi                                                                           #
+   ### -i option, instant backup applay and restart #############################
+   if [ "$INSTANT" == "true" ]							#
+    then									#
+    ./longstop.sh								#
+    ./backup.sh									#
+    ./applayupdates.sh								#
+    ./start.sh -b								#
+   fi										#
  else										#
   printf "[$GREEN DONE $NORMAL] build $BUILD is the latest build number.\n"	#
   if [ "$RUN" == "$SERVER" ]                                                    #

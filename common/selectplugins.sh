@@ -45,6 +45,13 @@ if [ $SERVERTYPE == "vanilla" ]         #
 fi                                      #
 #########################################
 
+#### SKIP IF VANILLA SERVER NO PLUGINS ##
+if [ $SERVERTYPE == "snapshot" ]        #
+ then                                   #
+  exit                                  #
+fi                                      #
+#########################################
+
 #### DISPLAY INFOS ######################
 printf "[ INFO ] modify plugins...\n"	#
 #########################################
@@ -84,7 +91,7 @@ read -n 1 -p "[  IN  ] [ y / n ] Install CoreProtect? : " COREPROTECT	#
 if [ "$COREPROTECT" == "y" ]						#
  then									#
   sed -i "s|COREPROTECT=\"false\"|COREPROTECT=\"true\"|" $SCDIR/pluginupdate.sh	#
-  cp $SPDIR/CoreProtect-20.1*.jar $MPDIR/				#
+  cp $SPDIR/CoreProtect-20*.jar $MPDIR/					#
   printf "\n"								#
  else									#
   printf "\n"								#

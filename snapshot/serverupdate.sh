@@ -1,9 +1,9 @@
 #!/bin/bash
 #################################################################
 # Name:         serverupdate.sh       Version:      0.3.0       #
-# Created:      05.12.2021            Modified:     16.12.2021  #
+# Created:      05.12.2021            Modified:     23.12.2021  #
 # Author:       Joachim Traeuble                                #
-# Purpose:      fetching the latest paper server 	        #
+# Purpose:      fetching the latest snapshot server 	        #
 #################################################################
 
 #### ADJUST SERVER VARIABELS HERE #######

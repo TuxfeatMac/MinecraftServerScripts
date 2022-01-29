@@ -53,11 +53,16 @@ if [ "$RUN" == "$SERVER" ]              		              	#
 fi                                                           		#
 #########################################################################
 
-#### START SERVER #######################################################################
-printf "[ INFO ] [$YELLOW  START  $NORMAL] starting $SERVER with $RAM Ram now...\n"	#
-cd ~/$SERVER/                                              				#
-screen -mdS $SERVER java -Xmx$RAM -Xms$RAM -jar paper-$VERSION-*.jar nogui	 	#
-#########################################################################################
+#### START SERVER #######################################################################################################################
+printf "[ INFO ] [$YELLOW  START  $NORMAL] starting $SERVER with $RAM Ram now...\n"							#
+cd ~/$SERVER/                                              										#
+screen -mdS $SERVER java -Xms$RAM -Xmx$RAM \
+-XX:+AlwaysPreTouch -XX:+DisableExplicitGC -XX:MaxGCPauseMillis=200 -XX:+ParallelRefProcEnabled -XX:+UnlockExperimentalVMOptions \
+-XX:G1NewSizePercent=30 -XX:G1MaxNewSizePercent=40 -XX:G1HeapRegionSize=8M -XX:G1ReservePercent=20 -XX:G1HeapWastePercent=5 \
+-XX:G1MixedGCCountTarget=4 -XX:InitiatingHeapOccupancyPercent=15 -XX:G1MixedGCLiveThresholdPercent=90 \
+-XX:G1RSetUpdatingPauseTimePercent=5 -XX:SurvivorRatio=32 -XX:+PerfDisableSharedMem -XX:MaxTenuringThreshold=1 \
+-jar paper-$VERSION-*.jar nogui														#
+#########################################################################################################################################
 
 #### FORCED BACKGROUND START ####
 if [ "$BACKGROUND" == "true" ]	#

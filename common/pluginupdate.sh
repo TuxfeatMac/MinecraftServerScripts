@@ -33,7 +33,7 @@ YELLOW=$(tput setaf 3)   #
 ##########################
 
 #### STATIC VARIABELS ###########################
-SERVERTYPE=""				#
+SERVERTYPE=""					#
 UDIR=~/$SERVER/scripts/update/			#
 UPDIR=~/$SERVER/scripts/update/plugins/		#
 NPDIR=~/$SERVER/scripts/update/plugins/new/	#
@@ -71,16 +71,16 @@ for DIR in $UDIR $UPDIR $NPDIR $MPDIR $TPDIR                                    
 done                                                                    	#
 #################################################################################
 
-#### SKIP IF VANILLA SERVER NO PLUGINS ##################
-if [ $SERVERTYPE == "vanilla" ]         		#
- then                                   		#
-  printf "[ SKIP ] vanilla, no plugins.\n"	#
-  exit                                  		#
-fi                  			                #
-#########################################################
+#### SKIP IF VANILLA SERVER NO PLUGINS ##################################
+if [ $SERVERTYPE == "vanilla" ] || [ $SERVERTYPE == "snapshot" ]	#
+ then                                   				#
+  printf "[ SKIP ] vanilla, no plugins.\n"				#
+  exit                                  				#
+fi                  			                		#
+#########################################################################
 
 #### CHECK VERSION  #############################################################################
-if [ "$VERSION" != "1.18" ]									# add compatibility list
+if [ "$VERSION" != "1.18.1" ] || [ "$VERSION"  != "1.17.1" ]									# add compatibility list
  then												#
   printf "[$RED SKIP $NORMAL] pluginupdate.sh is not compatible with $RED $VERSION $NORMAL\n"	#
   printf "[$RED WARN $NORMAL] trying anyway\n"							#
@@ -96,7 +96,7 @@ if [ "$RUN" == "$SERVER" ]                                                      
 fi                                                                              #
 #################################################################################
 
-#### EssentialsX ################################################################################################################################################
+#### EssentialsX ################################################################################################################################################ # implement get only on version change ?
 #### CHECK WITCH ESSENTIALS PLUGINS SHOULD BE DOWNLOADED ################################################################################################	#
 for DOWNLOAD in $ESSENTIALSX $ESSENTIALSX_CHAT $ESSENTIALSX_XMPP $ESSENTIALSX_SPAWN $ESSENTIALSX_GEOIP $ESSENTIALSX_PROTECT $ESSENTIALSX_ANTIBUILD	#	#
  do																			#	#

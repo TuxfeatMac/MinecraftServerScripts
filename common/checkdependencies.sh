@@ -23,8 +23,8 @@ SPACER_1="=========================================================\n"  #
 #########################################################################
 
 #### CHECK TOOLS ################################################################################
-printf "[ INFO ] checking base dependencies... \n"							#
-PKGS='screen curl jq unzip rrdtool figlet sudo'								#
+printf "[ INFO ] checking base dependencies... \n"						#
+PKGS='screen curl jq unzip rrdtool figlet sudo'							#
 for PKG in $PKGS										#
  do												#
   INSTALLED=$(command -v $PKG | cut -d "/" -f 4)                                     		#
@@ -65,7 +65,7 @@ if [ "$JAVA" == "" ]
   else												#
    JVER=$(java -version 2>&1 | grep version | cut -d " " -f 3 | tr -d '"')			#
     case $VERSION in										#
-    '1.18')											# add the other popular versions....
+    '1.18.1')											# add the other popular versions....
      if [ "$(echo ${JVER:0:2})" != "17" ]							#
       then											#
        printf "[ INFO ] java version $JVER found.\n"						#

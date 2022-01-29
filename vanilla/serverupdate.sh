@@ -1,9 +1,9 @@
 #!/bin/bash
 #################################################################
 # Name:         serverupdate.sh       Version:      0.3.0       #
-# Created:      05.12.2021            Modified:     08.12.2021  #
+# Created:      05.12.2021            Modified:     23.12.2021  #
 # Author:       Joachim Traeuble                                #
-# Purpose:      fetching the latest paper server 	        #
+# Purpose:      checking and fetching vanilla updates 		#
 #################################################################
 
 #### ADJUST SERVER VARIABELS HERE #######
@@ -23,6 +23,13 @@ YELLOW=$(tput setaf 3)   #
 UDIR=~/$SERVER/scripts/update/			#
 USDIR=~/$SERVER/scripts/update/vanilla/		#
 #################################################
+
+#### SCRIPT OPTIONS #####
+if [ "$1" == "-i" ]     #
+ then                   #
+  INSTANT="true"        #
+fi                      #
+#########################
 
 #### CHECK SETUP ################################################
 for VAR in "$SERVER" "$VERSION"					#
@@ -78,15 +85,21 @@ if [ "$VERSION" != "$LATEST" ] || [ ! -f ~/$SERVER/*.jar ]			#
      screen -S $SERVER -X stuff 'say [Info] downloading Server updates...\n'	#
    fi                                                     			#
    ./serverdownloader.sh $VERSION						#
-   mv vanilla-*.jar $USDIR							# update version numbers ? applay ?
-										#
+   mv vanilla-*.jar $USDIR							# update version numbers ?
    if [ "$RUN" == "$SERVER" ]                                              	#
     then                                                                   	#
      screen -S $SERVER -X stuff 'say [Info] Download erfolgreich!\n'		#
    fi                                                                      	#
-
- else
-  printf "[$GREEN DONE $NORMAL] Ver.: $VERSION is the latest version.\n"
+   ### -i option, instant backup applay and restart #############################
+   if [ "$INSTANT" == "true" ]                                                  #
+    then                                                                        #
+    ./longstop.sh                                                               #
+    ./backup.sh                                                                 #
+    ./applayupdates.sh                                                          #
+    ./start.sh -b                                                               #
+   fi                                                                           #
+ else										#
+  printf "[$GREEN DONE $NORMAL] Ver.: $VERSION is the latest version.\n"	#
   if [ "$RUN" == "$SERVER" ]                                              	#
    then                                                                   	#
    screen -S $SERVER -X stuff 'say [Info] Version: $VERSION ist aktuell.\n' 	#
