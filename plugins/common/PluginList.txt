@@ -1,20 +1,13 @@
 ====> OVER ALL TESTED VERSIONS ACCORDING TO AUTHOURS <======
-[ 1.14 1.15 1.16 1.17 ]
+[ 1.14 1.15 1.16 1.17 1.18 1.19]
 
-====> VAULT <===============================================
+====> VAULT <==================================================
 Native Minecraft Version:	--> 1.14 <--
 Tested Minecraft Versions:	[ 1.13 1.14 1.15 1.16 1.17 ]
 Source Code:	https://github.com/milkbowl/Vault
-Contributors:	Sleaker, Cerea1, Mung3r, Kainzo
-============================================================
+================================================================
 
-====> COREPROTECT <=========================================
-Tested Minecraft Versions:	[ 1.14 1.15 1.16 1.17 1.18 ]
+====> COREPROTECT <=============================================
+Tested Minecraft Versions:	[ 1.14 1.15 1.16 1.17 1.18 1.19]
 Source Code:    https://github.com/PlayPro/CoreProtect/ 
-============================================================
-
-====> HABOUR not nessesary on 1.17+ <=======================
-Native Minecraft Version:	--> 1.14 <--
-Tested Minecraft Versions:	[ 1.14 1.15 1.16 1.17 1.18 ]
-Source Code:	https://github.com/nkomarn/Harbor
-============================================================
+===============================================================

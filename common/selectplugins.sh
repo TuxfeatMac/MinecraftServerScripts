@@ -73,12 +73,12 @@ case "$VAULT" in                                                #
 esac								#   rm on unselect
 #################################################################
 
-#### COREPROTECT 20.1 ################################################### not working dependencies broken ?
+#### COREPROTECT 21.0 ################################################### not working dependencies broken ?
 read -n 1 -p "[  IN  ] [ y / n ] Install CoreProtect? : " COREPROTECT	#
 if [ "$COREPROTECT" == "y" ]						#
  then									#
   sed -i "s|COREPROTECT=\"false\"|COREPROTECT=\"true\"|" $SCDIR/pluginupdate.sh	#
-  cp $SPDIR/CoreProtect-20*.jar $MPDIR/					#
+  cp $SPDIR/CoreProtect-21*.jar $MPDIR/					#
   printf "\n"								#
  else									#
   printf "\n"								#
@@ -100,15 +100,15 @@ fi										#
 #################################################################################
 
 #### FASTASYNCWORLDEDIT #########################################################
-#read -n 1 -p "[  IN  ] [ y / n ] Install FastAsyncWorldEdit? : " FAWE		#
-#if [ "$FAWE" == "y" ]								#
-# then										#
-#  sed -i "s|FAWE=\"false\"|FAWE=\"true\"|" $SCDIR/pluginupdate.sh		#
-#  printf "\n"									#
-# else										#
-#  printf "\n"									#
-#fi										#
-################################################################################# link broken
+read -n 1 -p "[  IN  ] [ y / n ] Install FastAsyncWorldEdit? : " FAWE		#
+if [ "$FAWE" == "y" ]								#
+ then										#
+  sed -i "s|FAWE=\"false\"|FAWE=\"true\"|" $SCDIR/pluginupdate.sh		#
+  printf "\n"									#
+ else										#
+  printf "\n"									#
+fi										#
+#################################################################################
 
 #### ESSENTIALSX ########################################################################################
 read -n 1 -p "[  IN  ] [ y / n ] Install EssentialsX? : " ESSENTIALSX					#

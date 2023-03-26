@@ -1,7 +1,7 @@
 #!/bin/bash
 #################################################################
 # Name:         pluginupdate.sh	      Version:      0.3.0       #
-# Created:      02.12.2020            Modified:     08.12.2021  #
+# Created:      02.12.2020            Modified:     26.03.2023  #
 # Author:       Joachim Traeuble                                #
 # Purpose:      download latest plugins                         #
 #################################################################
@@ -80,7 +80,7 @@ fi                  			                		#
 #########################################################################
 
 #### CHECK VERSION  #############################################################################
-if [ "$VERSION" != "1.18.1" ] || [ "$VERSION"  != "1.17.1" ]									# add compatibility list
+if [ "$VERSION" != "1.19.4" ] || [ "$VERSION"  != "1.19.3" ]									# add compatibility list
  then												#
   printf "[$RED SKIP $NORMAL] pluginupdate.sh is not compatible with $RED $VERSION $NORMAL\n"	#
   printf "[$RED WARN $NORMAL] trying anyway\n"							#
@@ -168,40 +168,36 @@ if [ "$SKIP" == "false" ]													#				#
 fi																#				#
 #################################################################################################################################################################
 
-#### LUCK PERMS #################################################################################################################################
-if [ "$LUCKPERMS" == "true" ]															#
- then																		#
-  cd $TPDIR																	#
-  printf "[ INFO ] downloading latest LuckPerms...\n"												#
-  wget -O LuckPermsBukkit.zip https://ci.lucko.me/job/LuckPerms/lastStableBuild/artifact/bukkit/loader/build/libs/*zip*/libs.zip -q --show-progress #
-  unzip LuckPermsBukkit.zip > /dev/null														#
-  cd libs																	#
-  mv LuckPerms-Bukkit-*.jar $NPDIR														#
-  SKIP="false"																	#
- else																		#
-  printf "[ SKIP ] LuckPerms not selected...\n"													#
-fi																		#
-#################################################################################################################################################
+#### LUCK PERMS #########################################################################################################################################
+if [ "$LUCKPERMS" == "true" ]																#
+ then																			#
+  cd $TPDIR																		#
+  printf "[ INFO ] downloading latest LuckPerms...\n"													#
+  wget -O LuckPermsBukkit.zip https://ci.lucko.me/job/LuckPerms/lastStableBuild/artifact/bukkit/loader/build/libs/*zip*/libs.zip -q --show-progress	#
+  unzip LuckPermsBukkit.zip > /dev/null															#
+  cd libs																		#
+  mv LuckPerms-Bukkit-*.jar $NPDIR															#
+  SKIP="false"																		#
+ else																			#
+  printf "[ SKIP ] LuckPerms not selected...\n"														#
+fi																			#
+#########################################################################################################################################################
 
 #### FAST ASYNC WORLD EDIT ##############################################################################################################
-if [ "$FAWE" == "broken" ]														# broken link not working new ?
+if [ "$FAWE" == "true" ]														#
  then																	#
-  FVERSION=$(echo "$VERSION" | cut -d\. -f1,2)												#
   printf "[ INFO ] downloading latest FastAsyncWorldEdit...\n"										#
   cd $TPDIR																#
-  wget -O FAWE.zip https://ci.athion.net/job/FastAsyncWorldEdit-$FVERSION/lastStableBuild/artifact/*zip*/archive.zip 	#
+  wget -O FAWE.zip https://ci.athion.net/job/FastAsyncWorldEdit/lastStableBuild/artifact/*zip*/archive.zip -q --show-progress		#
+# wget -O FAWE.zip https://ci.athion.net/job/FastAsyncWorldEdit/lastReleaseBuild/artifact/*zip*/archive.zip -q --show-progress		#
   unzip FAWE.zip > /dev/null														#
-  cd archive/worldedit-bukkit/build/libs/												#
-  mv FastAsyncWorldEdit-$FVERSION-*.jar $NPDIR												#
+  cd archive/artifacts															#
+  mv FastAsyncWorldEdit-Bukkit-*.jar $NPDIR												#
   SKIP="false"																#
  else																	#
   printf "[ SKIP ] FastAsyncWorldEdit not selected...\n"										#
 fi																	#
 #########################################################################################################################################
-
-#### World EDIT #############
-# no permalink -> manual... #
-#############################
 
 #### VAULT ##################
 # no permalink -> manual... #
