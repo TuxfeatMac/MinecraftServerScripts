@@ -38,14 +38,14 @@ for VAR in "$SERVER" "$SCRIPTS"	"$VERSION"				#
 done                                                    		#
 #########################################################################
 
-#### SKIP IF VANILLA SERVER NO PLUGINS ##
+#### SKIP IF VANILLA SERVER #############
 if [ $SERVERTYPE == "vanilla" ]         #
  then                                   #
   exit                                  #
 fi                                      #
 #########################################
 
-#### SKIP IF VANILLA SERVER NO PLUGINS ##
+#### SKIP IF SNAPSHOT SERVER ############
 if [ $SERVERTYPE == "snapshot" ]        #
  then                                   #
   exit                                  #
@@ -71,19 +71,6 @@ case "$VAULT" in                                                #
  *)								#
   printf "bla....\n";;						#   implement
 esac								#   rm on unselect
-#################################################################
-
-#### HARBOR 1.6.4 ###############################################
-#read -n 1 -p "[  IN  ] [ y / n ] Install Harbor? : " HARBOR	#
-#if [ "$HARBOR" == "y" ]					#
-# then								#
-#  cp $SPDIR/Harbor*.jar $MPDIR/				#
-#  printf "\n"							#
-#  printf "\n[$GREEN DONE $NORMAL] copied Harbor in place...\n"	#
-# cp common config.yml ? ####					#
-# else								#
-#  printf "\n"							#
-#fi								#   in 1.17 not neded any more -> Gamerule
 #################################################################
 
 #### COREPROTECT 20.1 ################################################### not working dependencies broken ?
